@@ -2,31 +2,76 @@
     <div class="table">
         <div class="crumbs">
             <el-breadcrumb separator="/">
-                <el-breadcrumb-item><i class="el-icon-lx-cascades"></i>工厂订单信息</el-breadcrumb-item>
+                <el-breadcrumb-item>
+                    <i class="el-icon-lx-cascades"></i>
+                    工厂订单信息
+                </el-breadcrumb-item>
             </el-breadcrumb>
         </div>
         <div class="container">
             <div class="handle-box">
                 <!-- <el-button type="primary" icon="delete" class="handle-del mr10" @click="delAll">批量删除</el-button> -->
-                <el-select v-model="select_cate" filterable placeholder="筛选条件" class="handle-select mr10">
-                    <el-option key="1" label="订单编号" value="订单编号"></el-option>
-                    <el-option key="2" label="配送员" value="配送员"></el-option>
+                <el-select 
+                    v-model="select_cate" 
+                    filterable 
+                    placeholder="筛选条件" 
+                    class="handle-select mr10">
+                    <el-option 
+                        key="1" 
+                        label="订单编号" 
+                        value="订单编号"
+                    >
+                    </el-option>
+                    <el-option 
+                        key="2" 
+                        label="配送员" 
+                        value="配送员"
+                    >
+                    </el-option>
                 </el-select>
-                <el-input v-model="select_word" placeholder="筛选关键词" class="handle-input mr10" >
+                <el-input 
+                    v-model="select_word" 
+                    placeholder="筛选关键词" 
+                    class="handle-input mr10"
+                >
                 </el-input>
-                <el-button type="primary" icon="search" @click="search">搜索</el-button>
+                <el-button 
+                    type="primary" 
+                    icon="search" 
+                    @click="search"
+                > 搜索
+                </el-button>
                 <br/><br/>
-                <el-date-picker v-model="select_date" type="datetimerange" :picker-options="pickerOptions2"
-                                range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期">
+                <el-date-picker 
+                    v-model="select_date" 
+                    type="datetimerange" 
+                    :picker-options="pickerOptions2"
+                    range-separator="至" 
+                    start-placeholder="开始日期" 
+                    end-placeholder="结束日期"
+                >
                 </el-date-picker>
                 <br/><br/>
-                <el-radio v-model="radio" label="1">配送完成</el-radio>
-                <el-radio v-model="radio" label="2">正在配送</el-radio>
+                <el-radio 
+                    v-model="radio" 
+                    label="1"
+                > 配送完成
+                </el-radio>
+                <el-radio 
+                    v-model="radio" 
+                    label="2"
+                > 正在配送
+                </el-radio>
             </div>
-            <el-table :data="orderData" border class="table" ref="multipleTable" > <!--@selection-change="handleSelectionChange" -->
+            <el-table 
+                :data="orderData"
+                border
+                class="table"
+                fit
+                @row-click="openDetails"> <!--@selection-change="handleSelectionChange" -->
                 <!-- <el-table-column type="selection" width="55" align="center"></el-table-column> -->
                 <el-table-column prop="orderid" label="ID" width="100"></el-table-column>
-                <el-table-column prop="date" label="订单时间" sortable width="220"></el-table-column>
+                <el-table-column prop="date" label="订单时间" sortable width="230"></el-table-column>
                 <el-table-column prop="user" label="用户" width="150"></el-table-column>
                 <el-table-column prop="deliverer" label="配送员" width="150"></el-table-column>
                 <el-table-column prop="orderInfo" label="订单内容" width="260"></el-table-column>
@@ -45,7 +90,6 @@
                 </el-pagination>
             </div>
         </div>
-
         <!-- 编辑弹出框 -->
         <!-- <el-dialog title="编辑" :visible.sync="editVisible" width="30%">
             <el-form ref="form" :model="form" label-width="50px">
@@ -74,15 +118,26 @@
                 <el-button type="primary" @click="deleteRow">确 定</el-button>
             </span>
         </el-dialog> -->
+        <!-- <el-dialog
+            title="提示"
+            :visible.sync="orderdetailVisible"
+            width="30%"
+            :before-close="handleClose">
+            <span>这是一段信息</span>
+            <span slot="footer" class="dialog-footer">
+                <el-button @click="orderdetailVisible = false">取 消</el-button>
+                <el-button type="primary" @click="orderdetailVisible = false">确 定</el-button>
+            </span>
+        </el-dialog> -->
     </div>
 </template>
 
 <script>
     export default {
-        name: 'basetable',
+        name: 'order',
         data() {
             return {
-                url: 'http://localhost:8080/static/ordertable.json',
+                url: '/static/ordertable.json',
                 orderData: [],
                 cur_page: 1,
                 // multipleSelection: [],  // 多选
@@ -90,6 +145,7 @@
                 select_word: '',
                 // del_list: [],  // 删除列表
                 is_search: false,
+                orderdetailVisible: false,
                 // editVisible: false,  // 编辑按钮可以看见否
                 // delVisible: false,   // 删除按钮可以显示否
                 form: {
@@ -166,27 +222,66 @@
             },
             // 获取 easy-mock 的模拟数据
             getData() {
-                // 开发环境使用 easy-mock 数据，正式环境使用 json 文件
+                // //开发环境使用 easy-mock 数据，正式环境使用 json 文件
                 // if (process.env.NODE_ENV === 'development') {
-                //     this.url = '/ms/table/list';
+                //     this.url = '/api/pizza/orderInfo';
                 // };
-                this.$axios.post(this.url, {
-                    page: this.cur_page
-                }).then((res) => {
-                    console.log(res);
-                    this.orderData = res.data.list;
-                })
+                // this.$axios.get(this.url, {
+                //     page: this.cur_page
+                // }).then((res) => {
+                //     console.log(res);
+                //     this.orderData = res.data.list;
+                // })
                 // this.axios.get('http://localhost:8081/static/ordertable.json').then
+                // return this.axios.get('/api/orderInfo', {})
+                this.orderData = [
+                    {
+                        "orderid": "1",
+                        "date": "2019-02-05 10:01:00",
+                        "user": "秦妤欣",
+                        "deliverer": "吴青峰",
+                        "orderInfo": "夏威夷芝心披萨",
+                        "orderStatus": "已完成",
+                        "orderAmount": "100.0"
+                    }, {
+                        "orderid": "2",
+                        "date": "2019-02-25 12:01:00",
+                        "user": "沈庭杉",
+                        "deliverer": "陈信宏",
+                        "orderInfo": "帕帕罗尼披萨",
+                        "orderStatus": "配送中",
+                        "orderAmount": "120.0"
+                    }, {
+                        "orderid": "2",
+                        "date": "2019-01-05 12:01:00",
+                        "user": "秦妤欣",
+                        "deliverer": "小飞象",
+                        "orderInfo": "不管什么披萨",
+                        "orderStatus": "配送中",
+                        "orderAmount": "150.0"
+                    }
+                ]
             },
             search() {
                 this.is_search = true;
             },
-            formatter(row, column) {
-                return row.address;
-            },
+            // formatter(row, column) {
+            //     return row.address;
+            // },
             filterTag(value, row) {
                 return row.tag === value;
             },
+            openDetails (row) {
+                this.$router.push('/orderDetail')
+                console.log(row)
+            },
+            handleClose(done) {
+                this.$confirm('确认关闭？')
+                .then(_ => {
+                    done();
+                })
+                .catch(_ => {});
+            }
             // handleEdit(index, row) {
             //     this.idx = index;
             //     const item = this.tableData[index];
@@ -205,31 +300,31 @@
             //     this.idx = index;
             //     this.delVisible = true;
             // },
-            delAll() {
-                const length = this.multipleSelection.length;
-                let str = '';
-                this.del_list = this.del_list.concat(this.multipleSelection);
-                for (let i = 0; i < length; i++) {
-                    str += this.multipleSelection[i].name + ' ';
-                }
-                this.$message.error('删除了' + str);
-                this.multipleSelection = [];
-            },
+            // delAll() {
+            //     const length = this.multipleSelection.length;
+            //     let str = '';
+            //     this.del_list = this.del_list.concat(this.multipleSelection);
+            //     for (let i = 0; i < length; i++) {
+            //         str += this.multipleSelection[i].name + ' ';
+            //     }
+            //     this.$message.error('删除了' + str);
+            //     this.multipleSelection = [];
+            // },
             // handleSelectionChange(val) {
             //     this.multipleSelection = val;
             // },
             // 保存编辑
-            saveEdit() {
-                this.$set(this.tableData, this.idx, this.form);
-                this.editVisible = false;
-                this.$message.success(`修改第 ${this.idx+1} 行成功`);
-            },
-            // 确定删除
-            deleteRow(){
-                this.tableData.splice(this.idx, 1);
-                this.$message.success('删除成功');
-                this.delVisible = false;
-            }
+            // saveEdit() {
+            //     this.$set(this.tableData, this.idx, this.form);
+            //     this.editVisible = false;
+            //     this.$message.success(`修改第 ${this.idx+1} 行成功`);
+            // },
+            // // 确定删除
+            // deleteRow(){
+            //     this.tableData.splice(this.idx, 1);
+            //     this.$message.success('删除成功');
+            //     this.delVisible = false;
+            // }
         }
     }
 

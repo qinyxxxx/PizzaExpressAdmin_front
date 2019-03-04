@@ -64,6 +64,12 @@ export default new Router({
                     meta: { title: '配送员情况' }
                 },
                 {
+                    // map
+                    path: '/map',
+                    component: resolve => require(['../components/page/map.vue'], resolve),
+                    meta: { title: '配送员位置' }
+                },
+                {
                     // 拖拽列表组件
                     path: '/drag',
                     component: resolve => require(['../components/page/DragList.vue'], resolve),
@@ -90,6 +96,16 @@ export default new Router({
                     path: '/403',
                     component: resolve => require(['../components/page/403.vue'], resolve),
                     meta: { title: '403' }
+                },
+                {
+                    path: '/test',
+                    component: resolve => require(['../components/test.vue'], resolve),
+                    meta: { title: 'test' }
+                },
+                {
+                    path: '/orderDetail',
+                    component: resolve => require(['../components/page/orderDetail.vue'], resolve),
+                    meta: { title: '订单详情' }
                 }
             ]
         },

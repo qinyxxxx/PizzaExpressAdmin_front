@@ -1,12 +1,18 @@
 import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
-import axios from 'axios';
 import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css'; // 默认主题
+import VueAMap from 'vue-amap';
+// import iView from 'iview'
+import { lazyAMapApiLoaderInstance } from 'vue-amap';
+import axios from 'axios';
+// import http from './utils/request'
+
 // import '../static/css/theme-green/index.css';       // 浅绿色主题
 import './assets/css/icon.css';
 import './assets/icon/iconfont.css';
+// import 'iview/dist/styles/iview.css';
 import './components/common/directives';
 import "babel-polyfill";
 
@@ -16,6 +22,32 @@ Vue.use(ElementUI, {
 });
 Vue.prototype.$axios = axios;
 
+Vue.use(VueAMap);
+const GaoDeMapKey = 'f8cc2d6180a0320a83187b387203cf0e'
+VueAMap.initAMapApiLoader({
+  key: GaoDeMapKey,
+  plugin: ['AMap.Autocomplete', 'AMap.PlaceSearch', 'AMap.Scale', 'AMap.OverView', 
+            'AMap.ToolBar', 'AMap.MapType', 'AMap.PolyEditor', 'AMap.CircleEditor',
+            'Geolocation', 'Geocoder','AMap.Geocoder'],
+  uiVersion: '1.0',
+  // 默认高德 sdk 版本为 1.4.4
+  v: '1.4.4'
+});
+
+lazyAMapApiLoaderInstance.load().then(() => {
+    // your code ...
+    this.map = new AMap.Map('amapContainer', {
+      center: new AMap.LngLat(121.59996, 31.197646)
+    });
+  });
+
+
+// Vue.prototype.$http = http
+// Vue.prototype.$qs = require('querystring').stringify
+// Vue.prototype.$header = {
+//   'Content-Type': 'application/json;charset=utf-8'
+// }
+// Vue.use(iView)
 //使用钩子函数对路由进行权限跳转
 router.beforeEach((to, from, next) => {
     const role = localStorage.getItem('ms_username');
@@ -35,7 +67,6 @@ router.beforeEach((to, from, next) => {
         }
     }
 })
-
 
 new Vue({
     router,
