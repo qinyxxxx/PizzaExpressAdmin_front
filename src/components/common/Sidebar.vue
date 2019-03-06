@@ -84,8 +84,29 @@
                     },
                     {
                         icon: 'el-icon-pizza-xunikehu1',
-                        index: 'warehouse',
-                        title: '库存情况'
+                        index: '4',
+                        title: '库存情况',
+                      subs: [
+                        {
+                          index: '4-1',
+                          title: '库存信息',
+                          subs: [
+                            {
+                              index: 'warehouse_material',
+                              title: '原料库存信息'
+                            },
+                            {
+                              index: 'warehouse_product',
+                              title: '成品库存信息'
+                            },
+                          ]
+                        },
+                        {
+                          index: 'warehouse_emergency',
+                          title: '库存紧急事件'
+                        }
+                      ]
+
                     },
                     {
                         icon: 'el-icon-pizza-xiaoxi1',

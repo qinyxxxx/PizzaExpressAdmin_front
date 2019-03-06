@@ -32,7 +32,7 @@
                 <el-table-column prop="orderInfo" label="订单内容" width="260"></el-table-column>
                 <el-table-column prop="orderStatus" label="配送状态" width="120"></el-table-column>
                 <el-table-column prop="orderAmount" label="金额" width="120"></el-table-column>
-                
+
                 <!-- <el-table-column label="操作" width="180" align="center">
                     <template slot-scope="scope">
                         <el-button type="text" icon="el-icon-edit" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>

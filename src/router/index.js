@@ -20,10 +20,20 @@ export default new Router({
                     meta: { title: '系统首页' }
                 },
                 {
-                    path: '/warehouse',
-                    component: resolve => require(['../components/page/warehouse.vue'], resolve),
-                    meta: { title: '库存情况' }
+                    path: '/warehouse_material',
+                    component: resolve => require(['../components/page/warehouse_material.vue'], resolve),
+                    meta: { title: '原料库存信息' }
                 },
+              {
+                path: '/warehouse_product',
+                component: resolve => require(['../components/page/warehouse_product.vue'], resolve),
+                meta: { title: '成品库存信息' }
+              },
+              {
+                path: '/warehouse_emergency',
+                component: resolve => require(['../components/page/warehouse_emergency.vue'], resolve),
+                meta: { title: '库存紧急事件' }
+              },
                 {
                     path: '/order',
                     component: resolve => require(['../components/page/order.vue'], resolve),
@@ -49,13 +59,13 @@ export default new Router({
                     // markdown组件
                     path: '/markdown',
                     component: resolve => require(['../components/page/Markdown.vue'], resolve),
-                    meta: { title: 'markdown编辑器' }    
+                    meta: { title: 'markdown编辑器' }
                 },
                 {
                     // 图片上传组件
                     path: '/upload',
                     component: resolve => require(['../components/page/Upload.vue'], resolve),
-                    meta: { title: '文件上传' }   
+                    meta: { title: '文件上传' }
                 },
                 {
                     // vue-schart组件
