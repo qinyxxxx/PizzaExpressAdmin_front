@@ -5,19 +5,18 @@
             <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="0px" class="ms-content">
                 <el-form-item prop="username">
                     <el-input v-model="ruleForm.username" placeholder="username">
-                        <!-- 前置人头小图标 -->
-                        <el-button slot="prepend" icon="el-icon-pizza-yonghu1"></el-button>  
+                        <el-button slot="prepend" icon="el-icon-lx-people"></el-button>
                     </el-input>
                 </el-form-item>
                 <el-form-item prop="password">
                     <el-input type="password" placeholder="password" v-model="ruleForm.password" @keyup.enter.native="submitForm('ruleForm')">
-                        <el-button slot="prepend" icon="el-icon-pizza-mima1"></el-button>
+                        <el-button slot="prepend" icon="el-icon-lx-lock"></el-button>
                     </el-input>
                 </el-form-item>
                 <div class="login-btn">
-                    <el-button type="primary" round @click="submitForm('ruleForm')">登录</el-button>
+                    <el-button type="primary" @click="submitForm('ruleForm')">登录</el-button>
                 </div>
-                <p class="login-tips">工厂管理员登录</p>
+                <p class="login-tips">Tips : 用户名和密码随便填。</p>
             </el-form>
         </div>
     </div>
@@ -29,7 +28,7 @@
             return {
                 ruleForm: {
                     username: 'admin',
-                    password: '123456'
+                    password: '123123'
                 },
                 rules: {
                     username: [
@@ -46,7 +45,7 @@
                 this.$refs[formName].validate((valid) => {
                     if (valid) {
                         localStorage.setItem('ms_username',this.ruleForm.username);
-                        this.$router.push('/');
+                        this.$router.push('/dashboard');
                     } else {
                         console.log('error submit!!');
                         return false;
@@ -62,7 +61,7 @@
         position: relative;
         width:100%;
         height:100%;
-        background-image: url(../../assets/img/login-bg.jpg);
+        background-image: url(../../assets/img/login-bg.jpeg);
         background-size: 100%;
     }
     .ms-title{
@@ -70,7 +69,7 @@
         line-height: 50px;
         text-align: center;
         font-size:20px;
-        color: rgb(15, 75, 165);
+        color: #fff;
         border-bottom: 1px solid #ddd;
     }
     .ms-login{

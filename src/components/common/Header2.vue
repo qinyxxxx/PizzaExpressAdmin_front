@@ -4,7 +4,7 @@
         <div class="collapse-btn" @click="collapseChange">
             <i class="el-icon-menu"></i>
         </div>
-        <div class="logo">工厂管理中心</div>
+        <div class="logo">Pizza Express系统管理中心</div>
         <div class="header-right">
             <div class="header-user-con">
                 <!-- 全屏显示 -->

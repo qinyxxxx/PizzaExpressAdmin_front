@@ -23,17 +23,17 @@
         </el-col>
         <el-col :span="14" class="order-info">
           <el-card shadow="never">
-          订单编号： 
+          订单编号： {{this.$route.params.detail.orderid}}
           <br/><br/>
-          订单时间：
+          订单时间：{{this.$route.params.detail.date}}
           <br/><br/>
-          预计完成时间：
+          预计完成时间：{{this.$route.params.detail.date}}
           <br/><br/>
-          用户：
+          用户：{{this.$route.params.detail.user}}
           <br/><br/>
-          配送员：
+          配送员：{{this.$route.params.detail.deliver}}
           <br/><br/>
-          订单内容：
+          订单内容：{{this.$route.params.detail.orderInfo}}
           </el-card>
         </el-col>
       </el-row>
