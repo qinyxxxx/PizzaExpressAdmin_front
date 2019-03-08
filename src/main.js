@@ -52,7 +52,7 @@ router.beforeEach((to, from, next) => {
     let account = sessionStorage.getItem('account');
     console.log(account)
     if (to.path == '/login') {
-        console.log("path==login")
+        // console.log("path==login")
         next();
     }
     else if (account) {

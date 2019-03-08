@@ -3,7 +3,7 @@
         "orderid": "1",
         "date": "2019-02-05 10:01:00",
         "user": "秦妤欣",
-        "deliverer": "吴青峰",
+        "deliver": "吴青峰",
         "orderInfo": "夏威夷芝心披萨",
         "orderStatus": "已完成",
         "orderAmount": "100.0"
@@ -11,7 +11,7 @@
         "orderid": "2",
         "date": "2019-02-25 12:01:00",
         "user": "沈庭杉",
-        "deliverer": "陈信宏",
+        "deliver": "陈信宏",
         "orderInfo": "帕帕罗尼披萨",
         "orderStatus": "配送中",
         "orderAmount": "120.0"
@@ -19,7 +19,7 @@
         "orderid": "2",
         "date": "2019-01-05 12:01:00",
         "user": "秦妤欣",
-        "deliverer": "小飞象",
+        "deliver": "小飞象",
         "orderInfo": "不管什么披萨",
         "orderStatus": "配送中",
         "orderAmount": "150.0"

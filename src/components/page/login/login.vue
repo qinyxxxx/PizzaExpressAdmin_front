@@ -38,7 +38,7 @@ export default {
   data() {
     return {
       urlShop: "/pizzaexpress/shop/login",
-      urlSuper: "/pizzaexpress/user/login",
+      urlSuper: "/pizzaexpress/user/systemaccountlogin",
       url: "",
       ruleForm: {
         username: "",
@@ -71,8 +71,7 @@ export default {
             msg = "登录成功";
             sessionStorage.setItem("shopID", res.data.shopID);
             sessionStorage.setItem("account", res.data.account);
-            console.log(sessionStorage.getItem("account:", account));
-            console.log(sessionStorage.getItem("shopID:", shopID));
+            console.log(sessionStorage.getItem("account:", sessionStorage.getItem('shopID')));
             // 存储路由权限
             // let permissionList = res.data.permissionList[0].split(", ");
             // sessionStorage.setItem("permissionList", JSON.stringify(permissionList));
@@ -85,9 +84,11 @@ export default {
               type: "success"
             });
             setTimeout(() => {
+              console.log(this.radio)
               if (this.radio == "1") this.$router.push("/dashboard");
-              //跳转到主页
+              //跳转到工厂管理员
               else this.$router.push("/dashboard2");
+              //跳转到系统管理员
             }, 1000);
           } else {
             msg = "用户名或者密码错误";

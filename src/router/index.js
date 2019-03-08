@@ -143,6 +143,12 @@ export default new Router({
                     meta: { title: '菜单管理' }
                 },
                 {
+                    path: '/pizzaDetail',
+                    name: 'PizzaDetail',
+                    component: resolve => require(['../components/page/menu/pizzaDetail.vue'], resolve),
+                    meta: { title: 'pizza详情' }
+                },
+                {
                     path: '/shopInfo',
                     name: 'ShopInfo',
                     component: resolve => require(['../components/page/shop/shopInfo.vue'], resolve),

@@ -230,7 +230,7 @@ export default {
       console.log("row:", row.orderid);
     },
     goTo(){
-      this.$router.push('/Home2')
+      this.$router.push('/dashboard2')
     }
     // handleClose(done) {
     //   this.$confirm("确认关闭？")

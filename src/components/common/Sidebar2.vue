@@ -46,7 +46,7 @@
                     {
                         icon: 'el-icon-pizza-huodong',
                         index: 'shop',
-                        title: '工厂',
+                        title: '工厂管理',
                         subs: [
                             {
                                 index: 'shopInfo',
