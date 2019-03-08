@@ -40,8 +40,18 @@
                 items: [
                     {
                         icon: 'el-icon-pizza-shouye1',
-                        index: 'dashboard',
-                        title: '系统首页'
+                        index: '1',
+                        title: '首页',
+                      subs: [
+                        {
+                          index: 'Dashboard',
+                          title: '临时首页'
+                        },
+                        {
+                          index: 'echarts',
+                          title: '系统首页',
+                        }
+                      ]
                     },
                     {
                         icon: 'el-icon-pizza-wendangguanli1',
