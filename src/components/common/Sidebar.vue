@@ -60,7 +60,7 @@
                     },
                     {
                         icon: 'el-icon-pizza-tuandui1',
-                        index: 'deliverer',
+                        index: 'deliver',
                         title: '配送员情况'
                     },
                     {
