@@ -42,15 +42,14 @@
         <!-- <el-button type="primary" icon="delete" class="handle-del mr10" @click="delAll">批量删除</el-button> -->
         <el-select v-model="select_cate" filterable placeholder="筛选条件" class="handle-select mr10">
           <el-option key="1" label="原料名称" value="原料名称"></el-option>
-          <el-option key="2" label="进货厂商" value="进货厂商"></el-option>
         </el-select>
         <el-input v-model="select_word" placeholder="筛选关键词" class="handle-input mr10" >
         </el-input>
 
-        <br/><br/>
-        <el-date-picker class="handle-date mr10" v-model="select_date" type="daterange" :picker-options="pickerOptions2"
-                        range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期">
-        </el-date-picker>
+        <!--<br/><br/>-->
+        <!--<el-date-picker class="handle-date mr10" v-model="select_date" type="daterange" :picker-options="pickerOptions2"-->
+                        <!--range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期">-->
+        <!--</el-date-picker>-->
         <el-button type="primary" icon="search" @click="search">搜索</el-button>
         <el-button type="primary" @click="handleAdd">新增</el-button>
         <br/><br/>
@@ -60,26 +59,48 @@
         <el-table-column type="selection" width="55"></el-table-column>
         <el-table-column prop="material_id" label="ID" width="100"></el-table-column>
         <el-table-column prop="material_name" label="原料名称" sortable width="150"></el-table-column>
-        <el-table-column prop="material_factory" label="进货厂商" width="150"></el-table-column>
-        <el-table-column prop="material_date" label="生产日期" width="150"></el-table-column>
-        <el-table-column prop="material_note" label="备注" width="220"></el-table-column>
-        <el-table-column prop="material_quantity" label="剩余数量" width="140"></el-table-column>
-        <el-table-column label="操作" width="155">
+        <el-table-column prop="material_factory" label="进货厂商" width="170"></el-table-column>
+        <!--<el-table-column prop="material_date" label="生产日期" width="150"></el-table-column>-->
+        <el-table-column prop="material_note" label="备注" width="250"></el-table-column>
+        <el-table-column prop="material_quantity" label="剩余数量" width="150"></el-table-column>
+        <el-table-column label="操作" width="250">
           <template scope="scope">
-            <el-button  size="small" >进货</el-button>
+            <el-button  size="small" @click="material_check" >查看</el-button>
+            <el-button type="primary" size="small" >进货</el-button>
             <el-button type="danger" size="small" >停用</el-button>
           </template>
         </el-table-column>
       </el-table>
 
       <div :span="24" class="toolbar" style="padding:10px;">
-        <el-button @click="batchRemove" :disabled="this.sels.length===0">批量进货</el-button>
+        <el-button type="primary" @click="batchRemove" :disabled="this.sels.length===0">批量进货</el-button>
         <el-button type="danger" @click="batchRemove" :disabled="this.sels.length===0">批量停用</el-button>
         <el-pagination layout="prev, pager, next" background @current-change="handleCurrentChange" :page-size="20" :total="100" style="float:right;">
         </el-pagination>
       </div>
 
     </div>
+
+    <el-dialog title="查看原材料进货批次" :visible.sync="material_check_FormVisible" :close-on-click-modal="false">
+
+        <el-table :data="material_check_Form" border class="table" >
+          <el-table-column prop="material_id" label="ID" width="100"></el-table-column>
+          <el-table-column prop="material_name" label="原料名称" width="100"></el-table-column>
+          <el-table-column prop="material_date" label="生产日期" width="150"></el-table-column>
+          <el-table-column prop="material_batch" label="进货批次" width="150"></el-table-column>
+          <el-table-column prop="material_in_quantity" label="进货数量" width="100"></el-table-column>
+        </el-table>
+
+      <div :span="24" class="toolbar" style="padding:10px;">
+        <el-pagination layout="prev, pager, next" background @current-change="handleCurrentChange" :page-size="8" :total="100" style="float:right;">
+        </el-pagination>
+      </div>
+
+      <!--<div slot="footer" class="dialog-footer">-->
+        <!--<el-button @click.native="edit_FormVisible = false">取消</el-button>-->
+        <!--<el-button type="primary" @click.native="edit_FormVisible = false">提交</el-button>-->
+      <!--</div>-->
+    </el-dialog>
 
   </section>
 </template>
@@ -99,48 +120,85 @@
               },
               select_cate: '',
               select_word: '',
-              select_date: '',
+              //select_date: '',
               warehouseData: [
                 {
                   material_id:1,
                   material_name:"白菜",
                   material_factory:"双汇",
-                  material_date:"2019-3-6",
                   material_note:"一定要xxx家的！!!!!!!!!!!!!!!!!!!!!!!!!!!",
                   material_quantity:"1g",
                 },
                 {
                   material_id:2,
-                  material_name:"白菜",
+                  material_name:"西蓝花",
                   material_factory:"双汇",
-                  material_date:"2019-3-5",
                   material_note:"一定要xxx家的！",
                   material_quantity:"1g",
                 },
                 {
                   material_id:3,
-                  material_name:"白菜",
+                  material_name:"腐竹",
                   material_factory:"双汇",
-                  material_date:"2019-3-6",
                   material_note:"一定要xxx家的！",
                   material_quantity:"1g",
                 },
                 {
                   material_id:4,
-                  material_name:"白菜",
+                  material_name:"面粉",
                   material_factory:"双汇",
-                  material_date:"2019-3-5",
                   material_note:"一定要xxx家的！",
                   material_quantity:"1g",
                 }
               ],
               sels: [],
+              material_check_FormVisible:false,
+              material_check_Form:[
+                {
+                  material_id:1,
+                  material_name:"白菜",
+                  material_date:"2019-3-6",
+                  material_batch:2348329874,
+                  material_in_quantity:500
+                },
+                {
+                  material_id:2,
+                  material_name:"白菜",
+                  material_date:"2019-3-5",
+                  material_batch:2348329874,
+                  material_in_quantity:500
+                },
+                {
+                  material_id:3,
+                  material_name:"白菜",
+                  material_date:"2019-3-4",
+                  material_batch:2348329874,
+                  material_in_quantity:500
+                },
+                {
+                  material_id:4,
+                  material_name:"白菜",
+                  material_date:"2019-3-5",
+                  material_batch:2348329874,
+                  material_in_quantity:500
+                },
+                {
+                  material_id:5,
+                  material_name:"白菜",
+                  material_date:"2019-3-4",
+                  material_batch:2348329874,
+                  material_in_quantity:500
+                }
+              ]
             }
         },
         methods: {
           selsChange: function (sels) {
             this.sels = sels;
           },
+          material_check(){
+            this.material_check_FormVisible = true;
+          }
         }
     }
 </script>

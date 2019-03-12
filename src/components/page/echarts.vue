@@ -17,16 +17,17 @@
 
             <div slot="header" class="clearfix">
               <span>工厂基本信息</span>
-              <el-button style="float: right; padding: 3px 0" type="text" @click="factory_edit">修改</el-button>
+
             </div>
 
           <el-table :data="factory_info" border class="table" >
             <el-table-column prop="factory_name" label="工厂名称" width="130"></el-table-column>
-            <el-table-column prop="factory_id" label="工厂ID" width="120"></el-table-column>
-            <el-table-column prop="factory_number" label="电话号码" width="120"></el-table-column>
-            <el-table-column prop="factory_address" label="地址" width="150"></el-table-column>
-            <el-table-column prop="start_time" label="营业时间" width="125"></el-table-column>
-            <el-table-column prop="end_time" label="打烊时间" width="125"></el-table-column>
+            <el-table-column prop="factory_id" label="工厂ID" width="100"></el-table-column>
+            <el-table-column prop="factory_count" label="接单量（份）" width="100"></el-table-column>
+            <el-table-column prop="factory_number" label="电话号码" width="100"></el-table-column>
+            <el-table-column prop="factory_address" label="地址" width="130"></el-table-column>
+            <el-table-column prop="start_time" label="营业时间" width="100"></el-table-column>
+            <el-table-column prop="end_time" label="打烊时间" width="100"></el-table-column>
           </el-table>
 
         </el-card>
@@ -51,55 +52,6 @@
         <!--<div id="chartPie" style="width:100%; height:400px;"></div>-->
       <!--</el-col>-->
     </el-row>
-
-    <el-dialog title="修改" :visible.sync="edit_FormVisible" :close-on-click-modal="false">
-      <el-form :model="edit_Form" label-width="80px"  ref="edit_Form">
-        <el-row>
-          <el-col :span="12">
-        <el-form-item label="工厂名称" prop="factory_name">
-          <el-input v-model="edit_Form.factory_name"></el-input>
-        </el-form-item>
-          </el-col>
-          <el-col :span="12">
-        <el-form-item label="工厂ID" prop="factory_id">
-          <el-input v-model="edit_Form.factory_id"></el-input>
-        </el-form-item>
-          </el-col>
-        </el-row>
-        <el-row>
-          <el-col :span="12">
-        <el-form-item label="电话号码">
-          <el-input v-model="edit_Form.factory_number" ></el-input>
-        </el-form-item>
-          </el-col>
-          <el-col :span="12">
-        <el-form-item label="地址">
-          <el-input  v-model="edit_Form.factory_address"></el-input>
-        </el-form-item>
-          </el-col>
-        </el-row>
-
-        <el-row >
-          <el-col :span="12">
-        <el-form-item label="营业时间">
-          <el-time-picker   v-model="edit_Form.start_time" value-format="HH:mm"  format="HH:mm">
-          </el-time-picker>
-        </el-form-item>
-          </el-col>
-          <el-col :span="12">
-            <el-form-item label="打烊时间">
-              <el-time-picker   v-model="edit_Form.end_time" value-format="HH:mm"  format="HH:mm">
-              </el-time-picker>
-            </el-form-item>
-          </el-col>
-        </el-row>
-
-      </el-form>
-      <div slot="footer" class="dialog-footer">
-        <el-button @click.native="edit_FormVisible = false">取消</el-button>
-        <el-button type="primary" @click.native="edit_FormVisible = false">提交</el-button>
-      </div>
-    </el-dialog>
   </section>
 </template>
 
@@ -119,20 +71,12 @@
             factory_name:"华东师范大学店",
             factory_id:123456,
             factory_number:12580,
+            factory_count:1500,
             factory_address:"中山北路3663号",
             start_time:"8:00",
             end_time:"22:00"
             }
-          ],
-          edit_FormVisible:false,
-          edit_Form: {
-            factory_name:"华东师范大学店",
-            factory_id:123456,
-            factory_number:12580,
-            factory_address:"中山北路3663号",
-            start_time:"8:00",
-            end_time:"22:00"
-          }
+          ]
         }
       },
       methods: {
@@ -196,100 +140,11 @@
             ]
           });
         },
-        // drawBarChart() {
-        //   this.chartBar = echarts.init(document.getElementById('chartBar'));
-        //   this.chartBar.setOption({
-        //     title: {
-        //       text: 'Bar Chart',
-        //       subtext: '数据来自网络'
-        //     },
-        //     tooltip: {
-        //       trigger: 'axis',
-        //       axisPointer: {
-        //         type: 'shadow'
-        //       }
-        //     },
-        //     legend: {
-        //       data: ['2011年', '2012年']
-        //     },
-        //     grid: {
-        //       left: '3%',
-        //       right: '4%',
-        //       bottom: '3%',
-        //       containLabel: true
-        //     },
-        //     xAxis: {
-        //       type: 'value',
-        //       boundaryGap: [0, 0.01]
-        //     },
-        //     yAxis: {
-        //       type: 'category',
-        //       data: ['巴西', '印尼', '美国', '印度', '中国', '世界人口(万)']
-        //     },
-        //     series: [
-        //       {
-        //         name: '2011年',
-        //         type: 'bar',
-        //         data: [18203, 23489, 29034, 104970, 131744, 630230]
-        //       },
-        //       {
-        //         name: '2012年',
-        //         type: 'bar',
-        //         data: [19325, 23438, 31000, 121594, 134141, 681807]
-        //       }
-        //     ]
-        //   });
-        // },
-        // drawPieChart() {
-        //   this.chartPie = echarts.init(document.getElementById('chartPie'));
-        //   this.chartPie.setOption({
-        //     title: {
-        //       text: 'Pie Chart',
-        //       subtext: '纯属虚构',
-        //       x: 'center'
-        //     },
-        //     tooltip: {
-        //       trigger: 'item',
-        //       formatter: "{a} <br/>{b} : {c} ({d}%)"
-        //     },
-        //     legend: {
-        //       orient: 'vertical',
-        //       left: 'left',
-        //       data: ['直接访问', '邮件营销', '联盟广告', '视频广告', '搜索引擎']
-        //     },
-        //     series: [
-        //       {
-        //         name: '访问来源',
-        //         type: 'pie',
-        //         radius: '55%',
-        //         center: ['50%', '60%'],
-        //         data: [
-        //           { value: 335, name: '直接访问' },
-        //           { value: 310, name: '邮件营销' },
-        //           { value: 234, name: '联盟广告' },
-        //           { value: 135, name: '视频广告' },
-        //           { value: 1548, name: '搜索引擎' }
-        //         ],
-        //         itemStyle: {
-        //           emphasis: {
-        //             shadowBlur: 10,
-        //             shadowOffsetX: 0,
-        //             shadowColor: 'rgba(0, 0, 0, 0.5)'
-        //           }
-        //         }
-        //       }
-        //     ]
-        //   });
-        // },
         drawCharts() {
           this.drawColumnChart()
           this.drawLineChart()
           // this.drawBarChart()
           // this.drawPieChart()
-        },
-        factory_edit(){
-          this.edit_FormVisible=true;
-          // this.edit_Form = Object.assign({}, row);
         }
       },
       mounted: function () {

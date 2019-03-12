@@ -49,7 +49,7 @@
                         },
                         {
                           index: 'echarts',
-                          title: '系统首页',
+                          title: '工厂首页',
                         }
                       ]
                     },
@@ -98,23 +98,17 @@
                         title: '库存情况',
                       subs: [
                         {
-                          index: '4-1',
-                          title: '库存信息',
-                          subs: [
-                            {
-                              index: 'warehouse_material',
-                              title: '原料库存信息'
-                            },
-                            {
-                              index: 'warehouse_product',
-                              title: '成品库存信息'
-                            },
-                          ]
+                          index: 'warehouse_material',
+                          title: '原料库存信息',
                         },
                         {
-                          index: 'warehouse_emergency',
-                          title: '库存紧急事件'
-                        }
+                          index: 'warehouse_product',
+                          title: '成品库存信息',
+                        },
+                        // {
+                        //   index: 'warehouse_emergency',
+                        //   title: '库存紧急事件'
+                        // }
                       ]
 
                     },
