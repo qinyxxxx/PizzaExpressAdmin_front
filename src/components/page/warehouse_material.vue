@@ -65,7 +65,7 @@
         <el-table-column prop="material_note" label="备注" width="220"></el-table-column>
         <el-table-column prop="material_quantity" label="剩余数量" width="140"></el-table-column>
         <el-table-column label="操作" width="155">
-          <template scope="scope">
+          <template slot-scope="scope">
             <el-button  size="small" >进货</el-button>
             <el-button type="danger" size="small" >停用</el-button>
           </template>

@@ -38,18 +38,18 @@
         <el-table-column prop="date" label="订单时间" sortable width="200"></el-table-column>
         <el-table-column prop="user" label="用户" width="120"></el-table-column>
         <el-table-column prop="deliver" label="配送员" width="120"></el-table-column>
-        <el-table-column prop="orderInfo" label="订单内容" width="250"></el-table-column>
+        <el-table-column prop="orderInfo" label="订单内容" :formatter="formatter"></el-table-column>
         <el-table-column
           prop="orderStatus"
           label="配送状态"
           width="120"
-          :filters="[{ text: '配送完成', value: '配送完成' }, { text: '正在配送', value: '正在配送' }]"
+          :filters="[{ text: '等待接单', value: '等待接单' },{ text: '配送完成', value: '配送完成' }, { text: '正在配送', value: '正在配送' }]"
           :filter-method="filterStatus"
           filter-placement="bottom-end"
         >
           <template slot-scope="scope">
             <el-tag
-              :type="scope.row.orderStatus === '配送完成' ? 'primary' : 'success'"
+              :type="scope.row.orderStatus === '配送完成' ? 'success' : 'primary'"
               disable-transitions
             >{{scope.row.orderStatus}}</el-tag>
           </template>
@@ -72,7 +72,6 @@
       </div>
     </div>
   </div>
-  
 </template>
 
 <script>
@@ -137,49 +136,49 @@ export default {
       this.getData();
     },
     getData() {
-      this.$axios
-        .post(this.urlInit, {
-          shopID: sessionStorage.getItem("shopID")
-        })
-        .then(res => {
-          let orderData = res.data.orderData.data;
-          this.orderData = orderData;
-          let status = res.data.status; //状态码
-          if (status == 200) {
-            console.log(this.orderData);
-          } else {
-            console.log(status);
-          }
-        });
-      // this.orderData = [
-      //   {
-      //     orderid: "1",
-      //     date: "2019-02-05 10:01:00",
-      //     user: "秦妤欣",
-      //     deliver: "吴青峰",
-      //     orderInfo: "夏威夷芝心披萨",
-      //     orderStatus: "配送完成",
-      //     orderAmount: "100.0"
-      //   },
-      //   {
-      //     orderid: "2",
-      //     date: "2019-02-25 12:01:00",
-      //     user: "沈庭杉",
-      //     deliver: "陈信宏",
-      //     orderInfo: "帕帕罗尼披萨",
-      //     orderStatus: "正在配送",
-      //     orderAmount: "120.0"
-      //   },
-      //   {
-      //     orderid: "2",
-      //     date: "2019-01-05 12:01:00",
-      //     user: "秦妤欣",
-      //     deliver: "小飞象",
-      //     orderInfo: "不管什么披萨",
-      //     orderStatus: "正在配送",
-      //     orderAmount: "150.0"
-      //   }
-      // ];
+      // this.$axios
+      //   .post(this.urlInit, {
+      //     shopID: sessionStorage.getItem("shopID")
+      //   })
+      //   .then(res => {
+      //     let orderData = res.data.orderData.data;
+      //     this.orderData = orderData;
+      //     let status = res.data.status; //状态码
+      //     if (status == 200) {
+      //       console.log(this.orderData);
+      //     } else {
+      //       console.log(status);
+      //     }
+      //   });
+      this.orderData = [
+        {
+          orderid: "1",
+          date: "2019-02-05 10:01:00",
+          user: "秦妤欣",
+          deliver: "吴青峰",
+          orderInfo: "夏威夷芝心披萨",
+          orderStatus: "配送完成",
+          orderAmount: "100.0"
+        },
+        {
+          orderid: "2",
+          date: "2019-02-25 12:01:00",
+          user: "沈庭杉",
+          deliver: "陈信宏",
+          orderInfo: "帕帕罗尼披萨",
+          orderStatus: "正在配送",
+          orderAmount: "120.0"
+        },
+        {
+          orderid: "2",
+          date: "2019-01-05 12:01:00",
+          user: "秦妤欣",
+          deliver: "小飞象",
+          orderInfo: "不管什么披萨",
+          orderStatus: "正在配送",
+          orderAmount: "150.0"
+        }
+      ];
     },
     filterStatus(value, row) {
       return row.orderStatus === value;
@@ -223,14 +222,22 @@ export default {
     openDetails(row) {
       this.$router.push({
         name: "OrderDetail",
-        params: {
-          detail: row
+        query: {
+          // detail: row
+          orderid: row.orderid,
+          date: row.date,
+          orderInfo: row.orderInfo,
+          deliver: row.deliver,
+          user: row.user,
         }
       });
       console.log("row:", row.orderid);
     },
-    goTo(){
-      this.$router.push('/dashboard2')
+    goTo() {
+      this.$router.push("/dashboard2");
+    },
+    formatter(row, column) {
+      return row.orderInfo;
     }
     // handleClose(done) {
     //   this.$confirm("确认关闭？")

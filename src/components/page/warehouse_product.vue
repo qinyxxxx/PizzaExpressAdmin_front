@@ -31,7 +31,7 @@
         <el-table-column prop="product_note" label="详细说明" width="320"></el-table-column>
         <el-table-column prop="product_quantity" label="剩余数量" width="140"></el-table-column>
         <el-table-column label="操作" width="155">
-          <template scope="scope">
+          <template slot-scope="scope">
             <el-button  size="small" >查看</el-button>
             <el-button type="danger" size="small" >下架</el-button>
           </template>

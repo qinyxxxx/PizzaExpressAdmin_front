@@ -9,31 +9,30 @@
       </el-breadcrumb>
     </div>
     <div class="container">
-      <el-row>
-        <el-col :span="14" class="order-info">
-          <el-card shadow="never">
-            编号： {{this.$route.params.detail.pizzaID}}
-            <br>
-            <br>
-            名字：{{this.$route.params.detail.pizzaName}}
-            <br>
-            <br>
-            描述：{{this.$route.params.detail.description}}
-            <br>
-            <br>图片：
-            <img src="../../../assets/img/xiaweiyi.jpg">
-            <br>
-            <br>
-            原料：{{this.$route.params.detail.formula}}
-            <br>
-            <br>
-            价格（9寸）：{{this.$route.params.detail.price9}}
-            <br>
-            <br>
-            价格（12寸）：{{this.$route.params.detail.price12}}
-          </el-card>
-        </el-col>
-      </el-row>
+      <div class="order-detail">
+        <img :src="picURL">
+        <br>
+        <br>
+        状态：{{this.$route.query.pizzaStatus}}
+        <br>
+        <br>
+        编号：{{this.$route.query.pizzaID}}
+        <br>
+        <br>
+        名字：{{this.$route.query.pizzaName}}
+        <br>
+        <br>
+        描述：{{this.$route.query.description}}
+        <br>
+        <br>
+        原料：{{this.$route.query.formula}}
+        <br>
+        <br>
+        价格（9寸）：{{this.$route.query.price9}}
+        <br>
+        <br>
+        价格（12寸）：{{this.$route.query.price12}}
+      </div>
     </div>
   </div>
 </template>
@@ -42,19 +41,18 @@
 export default {
   data() {
     return {
-        picURL: this.$route.params.detail.picURL,
+      picURL: this.$route.query.picURL
     };
   },
 
-  methods: {
-  }
+  methods: {}
 };
 </script>
 
 <style scoped>
 .order-detail {
   width: 100%;
-  font-size: 20px;
+  font-size: 18px;
 }
 .amap-wrapper {
   height: 500px;

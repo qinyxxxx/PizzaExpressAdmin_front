@@ -19,7 +19,7 @@
       </div>
       <el-table :data="deliverData" ref="filterTable" border class="table" fit>
         <el-table-column prop="deliverID" label="ID" width="150"></el-table-column>
-        <el-table-column prop="deliverName" label="姓名" width="250"></el-table-column>
+        <el-table-column prop="deliverName" label="姓名" :formatter="formatter"></el-table-column>
         <el-table-column prop="phone" label="电话" width="250"></el-table-column>
         <el-table-column
           prop="deliverStatus"
@@ -162,6 +162,9 @@ export default {
         }
       });
       console.log("row:", row.deliverID);
+    },
+    formatter(row, column) {
+      return row.deliverName;
     },
     delDeliver(row) {
       this.$axios
