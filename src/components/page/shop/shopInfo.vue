@@ -21,21 +21,24 @@
         <br/><br/>
       </div>
 
-      <el-table :data="factory_info" border class="table" >
+      <el-table :data="factory_info" border class="table" @selection-change="selsChange">
+        <el-table-column type="selection" width="55"></el-table-column>
         <el-table-column prop="factory_name" label="工厂名称" width="150"></el-table-column>
         <el-table-column prop="factory_id" label="工厂ID" width="120"></el-table-column>
-        <el-table-column prop="factory_count" label="接单量（份）" width="120"></el-table-column>
-        <el-table-column prop="factory_number" label="电话号码" width="150"></el-table-column>
+        <el-table-column prop="factory_count" label="接单量（份）" width="100"></el-table-column>
+        <el-table-column prop="factory_number" label="电话号码" width="120"></el-table-column>
         <el-table-column prop="factory_address" label="工厂地址" width="200"></el-table-column>
-        <el-table-column prop="start_time" label="营业时间" width="130"></el-table-column>
-        <el-table-column prop="end_time" label="打烊时间" width="130"></el-table-column>
-        <el-table-column label="操作" width="120">
+        <el-table-column prop="start_time" label="营业时间" width="100"></el-table-column>
+        <el-table-column prop="end_time" label="打烊时间" width="100"></el-table-column>
+        <el-table-column label="操作" width="180">
           <template scope="scope">
             <el-button type="primary" size="small" @click="factory_edit" >修改</el-button>
+            <el-button type="danger" size="small" >暂停营业</el-button>
           </template>
         </el-table-column>
       </el-table>
       <div :span="24" class="toolbar" style="padding:10px;">
+        <el-button type="danger"  :disabled="this.sels.length===0">批量停业</el-button>
         <el-pagination layout="prev, pager, next" background @current-change="handleCurrentChange" :page-size="8" :total="100" style="float:right;">
         </el-pagination>
       </div>
@@ -156,14 +159,18 @@
           factory_address:"中山北路3663号",
           start_time:"8:00",
           end_time:"22:00"
-        }
+        },
+        sels:[],
       }
     },
     methods: {
       factory_edit(){
         this.edit_FormVisible=true;
         // this.edit_Form = Object.assign({}, row);
-      }
+      },
+      selsChange: function (sels) {
+        this.sels = sels;
+      },
     }
   }
 </script>

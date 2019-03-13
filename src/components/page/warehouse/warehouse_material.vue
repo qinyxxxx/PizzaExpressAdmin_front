@@ -86,7 +86,7 @@
         <el-table :data="material_check_Form" border class="table" >
           <el-table-column prop="material_id" label="ID" width="100"></el-table-column>
           <el-table-column prop="material_name" label="原料名称" width="100"></el-table-column>
-          <el-table-column prop="material_date" label="生产日期" width="150"></el-table-column>
+          <el-table-column prop="material_date" label="进货日期" width="150"></el-table-column>
           <el-table-column prop="material_batch" label="进货批次" width="150"></el-table-column>
           <el-table-column prop="material_in_quantity" label="进货数量" width="100"></el-table-column>
         </el-table>

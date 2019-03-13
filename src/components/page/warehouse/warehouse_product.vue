@@ -17,9 +17,9 @@
           <el-form-item>
             <el-button type="primary" v-on:click="getUsers">查询</el-button>
           </el-form-item>
-          <el-form-item>
-          <el-button type="primary" @click="handleAdd">新增</el-button>
-          </el-form-item>
+          <!--<el-form-item>-->
+          <!--<el-button type="primary" @click="handleAdd">新增</el-button>-->
+          <!--</el-form-item>-->
         </el-form>
       </el-col>
 
@@ -32,14 +32,14 @@
         <el-table-column prop="product_quantity" label="剩余数量" width="140"></el-table-column>
         <el-table-column label="操作" width="155">
           <template scope="scope">
-            <el-button  size="small" >查看</el-button>
-            <el-button type="danger" size="small" >下架</el-button>
+            <el-button type="primary"  size="small" >增加库存</el-button>
+            <!--<el-button type="danger" size="small" >下架</el-button>-->
           </template>
         </el-table-column>
       </el-table>
 
       <div :span="24" class="toolbar" style="padding:10px;">
-        <el-button type="danger" @click="batchRemove" :disabled="this.sels.length===0">批量下架</el-button>
+        <!--<el-button type="danger" @click="batchRemove" :disabled="this.sels.length===0">批量下架</el-button>-->
         <el-pagination layout="prev, pager, next" background @current-change="handleCurrentChange" :page-size="20" :total="100" style="float:right;">
         </el-pagination>
       </div>
