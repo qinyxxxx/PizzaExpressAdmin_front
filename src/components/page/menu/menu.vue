@@ -20,6 +20,7 @@
         <el-dialog title="添加菜品" :visible.sync="addFormVisible">
           <el-form v-model="addObj">
             <el-upload
+              align="center"
               class="avatar-uploader"
               action="https://jsonplaceholder.typicode.com/posts/"
               :show-file-list="false"
@@ -37,8 +38,31 @@
             <el-form-item label="描述" :label-width="formLabelWidth">
               <el-input v-model="addObj.description" autocomplete="off"></el-input>
             </el-form-item>
-            <el-form-item label="原料" :label-width="formLabelWidth">
-              <el-input v-model="addObj.formula" autocomplete="off"></el-input>
+            <div align="center">9寸所需原料(12寸用量为9寸的1.5倍)</div><br>
+            <el-col span="12">
+              <el-form-item label="面粉" :label-width="formLabelWidth">
+                <el-input-number v-model="addObj.flour" :min="0" :max="1000" :step="100" label="面粉"></el-input-number>
+              </el-form-item>
+              <el-form-item label="鸡蛋" :label-width="formLabelWidth">
+                <el-input-number v-model="addObj.egg" :min="0" :max="300" :step="50" label="鸡蛋"></el-input-number>
+              </el-form-item>
+            </el-col>
+            <el-col span="12">
+              <el-form-item label="芝士" :label-width="formLabelWidth">
+                <el-input-number v-model="addObj.cheese" :min="0" :max="1000" :step="50" label="芝士"></el-input-number>
+              </el-form-item>
+              <el-form-item label="蔬菜" :label-width="formLabelWidth">
+                <el-input-number
+                  v-model="addObj.vegetable"
+                  :min="0"
+                  :max="1000"
+                  :step="100"
+                  label="蔬菜"
+                ></el-input-number>
+              </el-form-item>
+            </el-col>
+            <el-form-item label="牛肉" :label-width="formLabelWidth">
+              <el-input-number v-model="addObj.meat" :min="0" :max="1000" :step="100" label="牛肉"></el-input-number>
             </el-form-item>
             <el-form-item label="价格（9寸）" :label-width="formLabelWidth">
               <el-input v-model="addObj.price9" autocomplete="off"></el-input>
@@ -54,7 +78,7 @@
         </el-dialog>
       </div>
       <el-table :data="pizzaData" ref="filterTable" border class="table" fit>
-        <el-table-column prop="pizzaID" label="ID" width="300"></el-table-column>
+        <el-table-column prop="pizzaID" label="ID" width="100"></el-table-column>
         <el-table-column prop="pizzaName" label="名称" :formatter="formatter"></el-table-column>
         <!-- <el-table-column prop="description" label="描述" width="200"></el-table-column>
         <el-table-column prop="formula" label="原料" width="230"></el-table-column>
@@ -98,9 +122,18 @@
                 <el-form-item label="描述" :label-width="formLabelWidth">
                   <el-input v-model="editObj.description" autocomplete="off"></el-input>
                 </el-form-item>
-                <el-form-item label="原料" :label-width="formLabelWidth">
-                  <el-input v-model="editObj.formula" autocomplete="off"></el-input>
-                </el-form-item>
+                <!-- <el-form-item label="原料" :label-width="formLabelWidth">
+                  <el-input v-model="editObj.flour" autocomplete="off"></el-input>
+                </el-form-item>-->
+                <!-- <el-form-item label="面粉" :label-width="formLabelWidth">
+                  <el-input-number
+                    v-model="editObj.flour"
+                    @change="handleFormulaChange('flour')"
+                    :min="0"
+                    :max="100"
+                    label="面粉"
+                  ></el-input-number>
+                </el-form-item>-->
                 <el-form-item label="价格（9寸）" :label-width="formLabelWidth">
                   <el-input v-model="editObj.price9" autocomplete="off"></el-input>
                 </el-form-item>
@@ -141,11 +174,12 @@ export default {
       urlInit: "/pizzaexpress/item/getallitems",
       urlDetail: "/pizzaexpress/item/getallitems",
       urlDel: "/pizzaexpress/item/getallitems",
-      urlEdit: "/pizzaexpress/item/getallitems",
+      urlEdit: "/pizzaexpress/item/updateitems",
       urlAdd: "/pizzaexpress/item/getallitems",
       pizzaData: [],
       cur_page: 1,
       total: 20,
+      active: 0,
       select_cate: "",
       select_word: "",
       pizzaID: "-1",
@@ -157,7 +191,11 @@ export default {
       editObj: {
         pizzaName: "",
         description: "",
-        formula: "",
+        flour: 0,
+        egg: 0,
+        cheese: 0,
+        vegetable: 0,
+        meat: 0,
         pizzaStatus: "",
         price9: "",
         picURL: "",
@@ -166,7 +204,11 @@ export default {
       addObj: {
         pizzaName: "",
         description: "",
-        formula: "",
+        flour: 0,
+        egg: 0,
+        cheese: 0,
+        vegetable: 0,
+        meat: 0,
         pizzaStatus: "",
         price9: "",
         picURL: "",
@@ -187,51 +229,61 @@ export default {
       return row.pizzaName;
     },
     getData() {
-      // this.$axios
-      //   .post(this.urlInit)
-      //   .then(res => {
-      //     let pizzaData = res.data.itemData.data;
-      //     this.pizzaData = pizzaData;
-      //     let status = res.data.status; //状态码
-      //     if (status == 200) {
-      //       console.log(this.pizzaData);
-      //     } else {
-      //       console.log(status);
-      //     }
-      //   });
-      this.pizzaData = [
-        {
-          pizzaID: "1",
-          pizzaName: "夏威夷芝心披萨",
-          description: "好吃",
-          formula: "夏威夷、披萨",
-          pizzaStatus: "上架",
-          picURL:
-            "http://pic.dominos.com.cn:8000/ApiPicture/20190306/3caea7802d1b4039bc51f1822f447a5f.jpg",
-          price9: "99",
-          price12: "122"
-        },
-        {
-          pizzaID: "1",
-          pizzaName: "夏威夷芝心披萨",
-          description: "好吃",
-          pizzaStatus: "下架",
-          formula: "夏威夷、披萨",
-          price9: "99",
-          picURL: "",
-          price12: "122"
-        },
-        {
-          pizzaID: "1",
-          pizzaName: "夏威夷芝心披萨",
-          description: "好吃",
-          formula: "夏威夷、披萨",
-          pizzaStatus: "下架",
-          price9: "99",
-          picURL: "",
-          price12: "122"
+      this.$axios.post(this.urlInit).then(res => {
+        let pizzaData = res.data.itemData.data;
+        this.pizzaData = pizzaData;
+        let status = res.data.status; //状态码
+        if (status == 200) {
+          console.log(this.pizzaData);
+        } else {
+          console.log(status);
         }
-      ];
+      });
+      // this.pizzaData = [
+      //   {
+      //     pizzaID: "1",
+      //     pizzaName: "夏威夷芝心披萨",
+      //     description: "好吃",
+      //     flour: 2,
+      //     egg: 1,
+      //     cheese: 4,
+      //     vegetable: 2,
+      //     meat: 3,
+      //     pizzaStatus: "上架",
+      //     picURL:
+      //       "http://pic.dominos.com.cn:8000/ApiPicture/20190306/3caea7802d1b4039bc51f1822f447a5f.jpg",
+      //     price9: "99",
+      //     price12: "122"
+      //   },
+      //   {
+      //     pizzaID: "1",
+      //     pizzaName: "夏威夷芝心披萨",
+      //     description: "好吃",
+      //     pizzaStatus: "下架",
+      //     flour: 2,
+      //     egg: 1,
+      //     cheese: 4,
+      //     vegetable: 2,
+      //     meat: 3,
+      //     price9: "99",
+      //     picURL: "",
+      //     price12: "122"
+      //   },
+      //   {
+      //     pizzaID: "1",
+      //     pizzaName: "夏威夷芝心披萨",
+      //     description: "好吃",
+      //     flour: 2,
+      //     egg: 1,
+      //     cheese: 4,
+      //     vegetable: 2,
+      //     meat: 3,
+      //     pizzaStatus: "下架",
+      //     price9: "99",
+      //     picURL: "",
+      //     price12: "122"
+      //   }
+      // ];
     },
     filterStatus(value, row) {
       return row.pizzaStatus === value;
@@ -268,7 +320,12 @@ export default {
       this.addObj = {
         pizzaName: "",
         description: "",
-        formula: "",
+        flour: 0,
+        egg: 0,
+        cheese: 0,
+        vegetable: 0,
+        meat: 0,
+        pizzaStatus: "",
         price9: "",
         picURL: "",
         price12: ""
@@ -276,26 +333,32 @@ export default {
       this.addFormVisible = true;
     },
     addDo() {
-      this.$axios
-        .post(this.urlAdd, {
-          pizzaName: this.addObj.pizzaName,
-          description: this.addObj.description,
-          picURL: this.addObj.picURL,
-          pizzaStatus: this.addObj.pizzaStatus,
-          formula: this.addObj.formula,
-          price9: this.addObj.price9,
-          price12: this.addObj.price12
-        })
-        .then(res => {
-          let pizzaData = res.data.itemData.data;
-          this.pizzaData = pizzaData;
-          let status = res.data.status; //状态码
-          if (status == 200) {
-            console.log(this.this.pizzaData);
-          } else {
-            console.log(status);
-          }
-        });
+      console.log("addObj", this.addObj);
+      // this.$axios
+      //   .post(this.urlAdd, {
+      //     pizzaName: this.addObj.pizzaName,
+      //     description: this.addObj.description,
+      //     picURL: this.addObj.picURL,
+      //     pizzaStatus: this.addObj.pizzaStatus,
+      //     flour: this.addObj.flour,
+      //     egg: this.addObj.egg,
+      //     cheese: this.addObj.cheese,
+      //     vegetable: this.addObj.vegetable,
+      //     meat: this.addObj.meat,
+      //     price9: this.addObj.price9,
+      //     price12: this.addObj.price12
+      //   })
+      //   .then(res => {
+      //     // let pizzaData = res.data.itemData.data;
+      //     // this.pizzaData = pizzaData;
+      //     this.getData()
+      //     let status = res.data.status; //状态码
+      //     if (status == 200) {
+      //       console.log(this.this.pizzaData);
+      //     } else {
+      //       console.log(status);
+      //     }
+      //   });
       this.addFormVisible = false;
     },
 
@@ -331,8 +394,8 @@ export default {
       console.log("row:", row);
     },
     editPizza(row, index) {
-      this.editObj = row;
       this.editFormVisible = true;
+      this.editObj = row;
       console.log("row:", row);
     },
     editDo(row) {
@@ -354,7 +417,7 @@ export default {
           this.pizzaData.row = pizzaAfterEdit;
           let status = res.data.status; //状态码
           if (status == 200) {
-            console.log(this.this.pizzaData.row);
+            console.log("after update", this.this.pizzaData.row);
           } else {
             console.log(status);
           }

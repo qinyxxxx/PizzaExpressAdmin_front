@@ -22,7 +22,6 @@
           ></el-amap>
         </el-col>
         <el-col :span="14" class="order-info">
-          <el-card shadow="never">
           订单编号： {{this.$route.query.orderid}}
           <br/><br/>
           订单时间：{{this.$route.query.date}}
@@ -34,7 +33,6 @@
           配送员：{{this.$route.query.deliver}}
           <br/><br/>
           订单内容：{{this.$route.query.orderInfo}}
-          </el-card>
         </el-col>
       </el-row>
     </div>
@@ -121,6 +119,7 @@ let amapManager = new AMapManager()
   }
   .right{
     float: right;
+    height: 500px;
     width: 100%;
   }
 </style>

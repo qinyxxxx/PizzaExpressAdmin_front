@@ -174,6 +174,24 @@ export default new Router({
                     component: resolve => require(['../components/page/shop/shopIncome.vue'], resolve),
                     meta: { title: '工厂收益' }
                 },
+                {
+                    path: '/user',
+                    name: 'User',
+                    component: resolve => require(['../components/page/user/user.vue'], resolve),
+                    meta: { title: '用户管理' }
+                },
+                {
+                    path: '/superOrder',
+                    name: 'SuperOrder',
+                    component: resolve => require(['../components/page/order/superOrder.vue'], resolve),
+                    meta: { title: '订单管理' }
+                },
+                {
+                    path: '/superOrderDetail',
+                    name: 'SuperOrderDetail',
+                    component: resolve => require(['../components/page/order/superOrderDetail.vue'], resolve),
+                    meta: { title: '系统订单详情' }
+                },
             ]
         },
         {
