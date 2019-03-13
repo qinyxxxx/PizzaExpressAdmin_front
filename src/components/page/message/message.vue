@@ -10,14 +10,7 @@
     <div class="container">
       <el-tabs v-model="message">
         <el-tab-pane :label="`未读消息(${unread.length})`" name="first">
-          <el-table :data="unread" :show-header="false" style="width: 100%" @selection-change="sels_unread_Change">
-            <!--<el-table-column width="55">-->
-              <!--<template slot-scope="scope" >-->
-                <!--<el-checkbox-group v-model="checkedCities" @change="handleCheckedCitiesChange">-->
-                  <!--<el-checkbox ></el-checkbox>-->
-                <!--</el-checkbox-group>-->
-              <!--</template>-->
-            <!--</el-table-column>-->
+          <el-table :data="unread" ref="unreadTable" :show-header="false" style="width: 100%" :reserve-selection="true"  @selection-change="sels_unread_Change">
             <el-table-column type="selection" width="55"  @selection-change="sels_unread_Change">
             </el-table-column>
             <el-table-column>
@@ -33,7 +26,7 @@
             </el-table-column>
           </el-table>
           <div class="handle-row">
-            <el-checkbox :indeterminate="isIndeterminate_unread" v-model="checkAll_unread" @change="handleCheckAllChange_unread">全选</el-checkbox>
+            <el-checkbox :indeterminate="isIndeterminate_unread" v-model="checkAll_unread" :disabled="this.unread.length===0" @change="handleCheckAllChange_unread">全选</el-checkbox>
             <el-button type="primary" @click="batchRead" :disabled="this.sels_unread.length===0" >批量进货</el-button>
             <el-button type="primary" @click="jiancha" >检查</el-button>
           </div>
@@ -41,19 +34,12 @@
         <el-tab-pane :label="`已读消息(${readed.length})`" name="second">
           <template v-if="message === 'second'">
             <el-table :data="readed" :show-header="false" style="width: 100%" ><!--@selection-change="sels_readed_Change"-->
-              <!--<el-table-column type="selection" width="55">-->
-              <!--</el-table-column>-->
               <el-table-column>
                 <template slot-scope="scope">
                   <span class="message-title">{{scope.row.title}}</span>
                 </template>
               </el-table-column>
               <el-table-column prop="date" width="150"></el-table-column>
-              <!--<el-table-column width="120">-->
-                <!--<template slot-scope="scope">-->
-                  <!--<el-button type="danger" @click="handleDel(scope.$index)">删除</el-button>-->
-                <!--</template>-->
-              <!--</el-table-column>-->
             </el-table>
             <!--<div class="handle-row">-->
               <!--<el-checkbox :indeterminate="isIndeterminate_readed" v-model="checkAll_readed" @change="handleCheckAllChange_readed">全选</el-checkbox>-->
@@ -61,6 +47,7 @@
             <!--</div>-->
           </template>
         </el-tab-pane>
+
         <!--<el-tab-pane :label="`回收站(${trash.length})`" name="third">-->
           <!--<template v-if="message === 'third'">-->
             <!--<el-table :data="trash" :show-header="false" style="width: 100%">-->
@@ -167,10 +154,18 @@ export default {
     },
     handleCheckAllChange_unread(val) {
       this.sels_unread = val ?  this.unread : [];
-
-      // this.sels_unread.forEach(item => {
-      //   this.$refs.table.toggleRowSelection(item,true)
-      // });
+      if(this.sels_unread.length){
+      this.sels_unread.forEach(item => {
+        this.$refs.unreadTable.toggleRowSelection(item,true)
+      });
+      }
+      else {
+        this.sels_unread = this.unread;
+        this.sels_unread.forEach(item => {
+          this.$refs.unreadTable.toggleRowSelection(item,false)
+        });
+        // this.$refs.unreadTable.clearSelection()
+      }
       this.isIndeterminate_unread = false;
     },
     batchRead: function () {
