@@ -51,7 +51,12 @@
           series: [{
             name: '销量',
             type: 'bar',
-            data: [10, 20, 36, 10, 10, 20]
+            data: [10, 20, 36, 10, 10, 20],
+            itemStyle:{
+              normal:{
+                color:'#106EDD'
+              }
+            }
           }]
         });
       },
@@ -89,7 +94,12 @@
               name: '月销售额',
               type: 'line',
               stack: '总量',
-              data: [1200, 1320, 1010, 1340, 900, 2300]
+              data: [1200, 1320, 1010, 1340, 900, 2300],
+              itemStyle:{
+                normal:{
+                  color:'#106EDD'
+                }
+              }
             }
           ]
         });

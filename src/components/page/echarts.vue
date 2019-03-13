@@ -84,7 +84,9 @@
           this.chartColumn = echarts.init(document.getElementById('chartColumn'));
           this.chartColumn.setOption({
             title: { text: '今日各种披萨销量' },
-            tooltip: {},
+            tooltip: {
+
+            },
             xAxis: {
               data: ["韩式烤肉披萨", "照烧风味牛肉土豆披萨", "豪华尊享披萨", "意式烤肠披萨", "多重浓汁披萨", "BBQ鸡肉披萨"],
               type:'category',
@@ -97,7 +99,12 @@
             series: [{
               name: '销量',
               type: 'bar',
-              data: [10, 20, 36, 10, 10, 20]
+              data: [10, 20, 36, 10, 10, 20],
+              itemStyle:{
+                normal:{
+                  color:'#106EDD'
+                }
+              }
             }]
           });
         },
@@ -135,7 +142,12 @@
                 name: '月销售额',
                 type: 'line',
                 stack: '总量',
-                data: [1200, 1320, 1010, 1340, 900, 2300]
+                data: [1200, 1320, 1010, 1340, 900, 2300],
+                itemStyle:{
+                  normal:{
+                    color:'#106EDD'
+                  }
+                }
               }
             ]
           });
