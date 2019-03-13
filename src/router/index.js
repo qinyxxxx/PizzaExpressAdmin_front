@@ -15,7 +15,7 @@ export default new Router({
             meta: { title: '工厂管理员路由描述' },
             children: [
                 {
-                    path: '/dashboard',
+                    path: '/Dashboard',
                     name: 'Dashboard',
                     component: resolve => require(['../components/page/Dashboard.vue'], resolve),
                     meta: { title: '临时首页' }
