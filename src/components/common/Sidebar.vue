@@ -64,35 +64,6 @@
                         title: '配送员情况'
                     },
                     {
-                        icon: 'el-icon-pizza-liebiao1',
-                        index: '3',
-                        title: '订单相关',
-                        subs: [
-                            {
-                                index: 'form',
-                                title: '基本表单'
-                            },
-                            {
-                                index: '3-2',
-                                title: '三级菜单',
-                                subs: [
-                                    {
-                                        index: 'editor',
-                                        title: '富文本编辑器'
-                                    },
-                                    {
-                                        index: 'markdown',
-                                        title: 'markdown编辑器'
-                                    },
-                                ]
-                            },
-                            {
-                                index: 'upload',
-                                title: '文件上传'
-                            }
-                        ]
-                    },
-                    {
                         icon: 'el-icon-pizza-xunikehu1',
                         index: '4',
                         title: '库存情况',
@@ -123,36 +94,6 @@
                         index: 'message',
                         title: '消息处理'
                     },
-                    {
-                        icon: 'el-icon-rank',
-                        index: '6',
-                        title: '拖拽组件',
-                        subs: [
-                            {
-                                index: 'drag',
-                                title: '拖拽列表',
-                            },
-                            {
-                                index: 'dialog',
-                                title: '拖拽弹框',
-                            }
-                        ]
-                    },
-                    {
-                        icon: 'el-icon-warning',
-                        index: '7',
-                        title: '错误处理',
-                        subs: [
-                            {
-                                index: 'permission',
-                                title: '权限测试'
-                            },
-                            {
-                                index: '404',
-                                title: '404页面'
-                            }
-                        ]
-                    }
                 ]
             }
         },

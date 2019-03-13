@@ -4,7 +4,7 @@
       <el-breadcrumb separator="/">
         <el-breadcrumb-item>
           <i class="el-icon-lx-cascades"></i>
-          工厂订单信息
+          订单信息
         </el-breadcrumb-item>
       </el-breadcrumb>
     </div>
@@ -16,7 +16,6 @@
           <el-option key="2" label="配送员" value="配送员"></el-option>
         </el-select>
         <el-input v-model="select_word" placeholder="筛选关键词" class="handle-input mr10"></el-input>
-        <el-button type="primary" icon="search" @click="search">搜索</el-button>
         <br>
         <br>
         <el-date-picker
@@ -26,38 +25,72 @@
           format="yyyy-MM-dd HH:mm:ss"
           value-format="yyyy-MM-dd HH:mm:ss"
           range-separator="至"
-          start-placeholder="开始日期"
-          end-placeholder="结束日期"
+          start-placeholder="开始时间"
+          end-placeholder="结束时间"
         ></el-date-picker>
+        <el-button type="primary" icon="search" @click="search">搜索</el-button>
+        <el-button type="plain" icon="search" @click="clear">清除</el-button>
+        <el-button type="plain" icon="search" @click="getData">清除</el-button>
         <br>
       </div>
       <el-table :data="orderData" ref="filterTable" border class="table" fit>
-        <!--@selection-change="handleSelectionChange" -->
-        <!-- <el-table-column type="selection" width="55" align="center"></el-table-column> -->
-        <el-table-column prop="orderid" label="ID" width="100"></el-table-column>
-        <el-table-column prop="date" label="订单时间" sortable width="200"></el-table-column>
+        <el-table-column type="expand">
+          <template slot-scope="props">
+            <el-form label-position="left" class="demo-table-expand">
+              <el-form-item label="订单编号：">
+                <span>{{ props.row.orderID }}</span>
+              </el-form-item>
+              <el-form-item label="用户：">
+                <span>{{ props.row.user }}</span>
+              </el-form-item>
+              <el-form-item label="配送员：">
+                <span>{{ props.row.deliver }}</span>
+              </el-form-item>
+              <el-form-item label="送餐地址：">
+                <span>{{ props.row.orderAddress }}</span>
+              </el-form-item>
+              <el-form-item label="下单时间：">
+                <span>{{ props.row.startDate }}</span>
+              </el-form-item>
+              <el-form-item label="送达时间：">
+                <span>{{ props.row.finishDate }}</span>
+              </el-form-item>
+              <el-form-item label="订单内容：">
+                <span>{{ props.row.orderInfo }}</span>
+              </el-form-item>
+              <el-form-item label="金额：">
+                <span>{{ props.row.orderAmount }}</span>
+              </el-form-item>
+            </el-form>
+          </template>
+        </el-table-column>
+        <el-table-column prop="orderID" label="ID" width="200"></el-table-column>
+        <el-table-column prop="startDate" label="下单时间" sortable :formatter="formatter"></el-table-column>
         <el-table-column prop="user" label="用户" width="120"></el-table-column>
         <el-table-column prop="deliver" label="配送员" width="120"></el-table-column>
-        <el-table-column prop="orderInfo" label="订单内容" :formatter="formatter"></el-table-column>
         <el-table-column
           prop="orderStatus"
           label="配送状态"
           width="120"
-          :filters="[{ text: '等待接单', value: '等待接单' },{ text: '配送完成', value: '配送完成' }, { text: '正在配送', value: '正在配送' }]"
+          :filters="[{ text: '未接单', value: '未接单' },{ text: '已送达', value: '已送达' }, { text: '正在配送', value: '正在配送' }]"
           :filter-method="filterStatus"
           filter-placement="bottom-end"
         >
           <template slot-scope="scope">
             <el-tag
-              :type="scope.row.orderStatus === '配送完成' ? 'success' : 'primary'"
+              :type="scope.row.orderStatus === '已送达' ? 'success' : 'primary'"
               disable-transitions
             >{{scope.row.orderStatus}}</el-tag>
           </template>
         </el-table-column>
-        <el-table-column prop="orderAmount" label="金额" width="120"></el-table-column>
-        <el-table-column label="操作" width="100" align="center">
+        <el-table-column label="操作" width="200" align="center">
           <template slot-scope="scope">
-            <el-button type="text" icon="el-icon-view" @click="openDetails(scope.row)">查看</el-button>
+            <el-button
+              v-if="scope.row.orderStatus=='正在配送'"
+              type="text"
+              icon="el-icon-view"
+              @click="openDetails(scope.row)"
+            >查看配送状态</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -84,15 +117,11 @@ export default {
       orderData: [],
       cur_page: 1,
       total: 20,
-      // multipleSelection: [],  // 多选
       select_cate: "",
       select_word: "",
       select_date: [],
-      orderid: "-1",
-      deliverid: "-1",
-      // editVisible: false,  // 编辑按钮可以看见否
-      // delVisible: false,   // 删除按钮可以显示否
-      idx: -1,
+      orderID: "-1",
+      deliverID: "-1",
       pickerOptions2: {
         shortcuts: [
           {
@@ -136,49 +165,50 @@ export default {
       this.getData();
     },
     getData() {
-      // this.$axios
-      //   .post(this.urlInit, {
-      //     shopID: sessionStorage.getItem("shopID")
-      //   })
-      //   .then(res => {
-      //     let orderData = res.data.orderData.data;
-      //     this.orderData = orderData;
-      //     let status = res.data.status; //状态码
-      //     if (status == 200) {
-      //       console.log(this.orderData);
-      //     } else {
-      //       console.log(status);
-      //     }
-      //   });
-      this.orderData = [
-        {
-          orderid: "1",
-          date: "2019-02-05 10:01:00",
-          user: "秦妤欣",
-          deliver: "吴青峰",
-          orderInfo: "夏威夷芝心披萨",
-          orderStatus: "配送完成",
-          orderAmount: "100.0"
-        },
-        {
-          orderid: "2",
-          date: "2019-02-25 12:01:00",
-          user: "沈庭杉",
-          deliver: "陈信宏",
-          orderInfo: "帕帕罗尼披萨",
-          orderStatus: "正在配送",
-          orderAmount: "120.0"
-        },
-        {
-          orderid: "2",
-          date: "2019-01-05 12:01:00",
-          user: "秦妤欣",
-          deliver: "小飞象",
-          orderInfo: "不管什么披萨",
-          orderStatus: "正在配送",
-          orderAmount: "150.0"
-        }
-      ];
+      this.$axios
+        .post(this.urlInit, {
+          // shopID: sessionStorage.getItem("shopID")
+          shopID: "1"
+        })
+        .then(res => {
+          let orderData = res.data.orderData.data;
+          this.orderData = orderData;
+          let status = res.data.status; //状态码
+          if (status == 200) {
+            console.log(this.orderData);
+          } else {
+            console.log(status);
+          }
+        });
+      // this.orderData = [
+      //   {
+      //     orderid: "1",
+      //     date: "2019-02-05 10:01:00",
+      //     user: "秦妤欣",
+      //     deliver: "吴青峰",
+      //     orderInfo: "夏威夷芝心披萨",
+      //     orderStatus: "配送完成",
+      //     orderAmount: "100.0"
+      //   },
+      //   {
+      //     orderid: "2",
+      //     date: "2019-02-25 12:01:00",
+      //     user: "沈庭杉",
+      //     deliver: "陈信宏",
+      //     orderInfo: "帕帕罗尼披萨",
+      //     orderStatus: "正在配送",
+      //     orderAmount: "120.0"
+      //   },
+      //   {
+      //     orderid: "2",
+      //     date: "2019-01-05 12:01:00",
+      //     user: "秦妤欣",
+      //     deliver: "小飞象",
+      //     orderInfo: "不管什么披萨",
+      //     orderStatus: "正在配送",
+      //     orderAmount: "150.0"
+      //   }
+      // ];
     },
     filterStatus(value, row) {
       return row.orderStatus === value;
@@ -186,23 +216,23 @@ export default {
     search() {
       switch (this.select_cate) {
         case "配送员":
-          this.orderid = "-1";
-          this.deliverid = this.select_word;
+          this.orderID = "-1";
+          this.deliverID = this.select_word;
           break;
         case "订单编号":
-          this.deliverid = "-1";
-          this.orderid = this.select_word;
+          this.deliverID = "-1";
+          this.orderID = this.select_word;
           break;
       }
 
-      console.log("orderid:", this.orderid);
-      console.log("deliverid:", this.deliverid);
+      console.log("orderid:", this.orderID);
+      console.log("deliverid:", this.deliverID);
       console.log("startTime:", typeof this.select_date[1]);
       console.log("shopid:", typeof sessionStorage.getItem("shopID"));
       this.$axios
         .post(this.urlSelect, {
-          orderid: this.orderid,
-          deliverid: this.deliverid,
+          orderID: this.orderID,
+          deliverID: this.deliverID,
           startTime: this.select_date[0],
           endTime: this.select_date[1],
           shopID: sessionStorage.getItem("shopID")
@@ -220,18 +250,46 @@ export default {
         });
     },
     openDetails(row) {
-      this.$router.push({
-        name: "OrderDetail",
-        query: {
-          // detail: row
-          orderid: row.orderid,
-          date: row.date,
-          orderInfo: row.orderInfo,
-          deliver: row.deliver,
-          user: row.user,
-        }
-      });
-      console.log("row:", row.orderid);
+      // this.$axios
+      // .post(this.urlDeliverPos, {
+      //   deliver: row.deliver
+      // })
+      // .then(res => {
+      //   let deliverPos = res.data.orderData.data;
+      //   this.deliverPos = deliverPos;
+      //   let status = res.data.status; //状态码
+      //   if (status == 200) {
+      //     console.log(this.deliverPos);
+      //   } else {
+      //     console.log(status);
+      //   }
+      // });
+      (this.deliverPos = [121.406432, 31.226782]),
+        this.$router.push({
+          name: "OrderDetail",
+          query: {
+            // detail: row
+            orderID: row.orderID,
+            startDate: row.startDate,
+            orderInfo: row.orderInfo,
+            deliver: row.deliver,
+            user: row.user,
+            deliverPos: this.deliverPos,
+            orderAddress: row.orderAddress
+          }
+        });
+      // this.$router.push({
+      //   name: "OrderDetail",
+      //   query: {
+      //     // detail: row
+      //     orderid: row.orderid,
+      //     date: row.date,
+      //     orderInfo: row.orderInfo,
+      //     deliver: row.deliver,
+      //     user: row.user
+      //   }
+      // });
+      console.log("row:", row.orderID);
     },
     goTo() {
       this.$router.push("/dashboard2");
@@ -239,56 +297,6 @@ export default {
     formatter(row, column) {
       return row.orderInfo;
     }
-    // handleClose(done) {
-    //   this.$confirm("确认关闭？")
-    //     .then(_ => {
-    //       done();
-    //     })
-    //     .catch(_ => {});
-    // }
-    // handleEdit(index, row) {
-    //     this.idx = index;
-    //     const item = this.tableData[index];
-    //     this.form = {
-    //         orderid: item.orderid,
-    //         date: item.date,
-    //         user: item.user,
-    //         deliverer: item.deliverer,
-    //         orderInfo: item.orderInfo,
-    //         orderStatus: item.orderStatus,
-    //         orderAmount: item.orderAmount
-    //     }
-    //     // this.editVisible = true;
-    // },
-    // handleDelete(index, row) {
-    //     this.idx = index;
-    //     this.delVisible = true;
-    // },
-    // delAll() {
-    //     const length = this.multipleSelection.length;
-    //     let str = '';
-    //     this.del_list = this.del_list.concat(this.multipleSelection);
-    //     for (let i = 0; i < length; i++) {
-    //         str += this.multipleSelection[i].name + ' ';
-    //     }
-    //     this.$message.error('删除了' + str);
-    //     this.multipleSelection = [];
-    // },
-    // handleSelectionChange(val) {
-    //     this.multipleSelection = val;
-    // },
-    // 保存编辑
-    // saveEdit() {
-    //     this.$set(this.tableData, this.idx, this.form);
-    //     this.editVisible = false;
-    //     this.$message.success(`修改第 ${this.idx+1} 行成功`);
-    // },
-    // // 确定删除
-    // deleteRow(){
-    //     this.tableData.splice(this.idx, 1);
-    //     this.$message.success('删除成功');
-    //     this.delVisible = false;
-    // }
   }
 };
 </script>
@@ -319,5 +327,17 @@ export default {
 }
 .mr10 {
   margin-right: 10px;
+}
+.demo-table-expand {
+  font-size: 0;
+}
+.demo-table-expand label {
+  width: 90px;
+  color: #99a9bf;
+}
+.demo-table-expand .el-form-item {
+  margin-right: 0;
+  margin-bottom: 0;
+  width: 50%;
 }
 </style>

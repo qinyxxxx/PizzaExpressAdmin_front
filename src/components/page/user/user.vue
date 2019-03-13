@@ -12,6 +12,8 @@
       <div class="handle-box">
         <el-input v-model="selectWord" placeholder="用户ID" class="handle-input mr10"></el-input>
         <el-button type="primary" @click="search">搜索</el-button>
+        <el-button type="plain" @click="clear">清除</el-button>
+        <el-button type="plain" @click="getData">刷新</el-button>
       </div>
       <el-table :data="userData" ref="filterTable" border class="table" fit>
         <el-table-column prop="userID" label="ID" width="100"></el-table-column>
@@ -66,9 +68,8 @@ export default {
   name: "order",
   data() {
     return {
-      urlSelectUser: "/pizzaexpress/user/getorderbyselect",
-      urlInit: "/pizzaexpress/user/getallusers",
-      urlSelectOrder: "/pizzaexpress/order/getorderbyselect",
+      urlSelectUser: "/pizzaexpress/user/getuserbyid",
+      urlInit: "/pizzaexpress/user/getuserinfo",
       userData: [],
       cur_page: 1,
       total: 20,
@@ -91,44 +92,44 @@ export default {
       return row.userAddress;
     },
     getData() {
-      // this.$axios
-      //   .post(this.urlInit)
-      //   .then(res => {
-      //     let userData = res.data.userData.data;
-      //     this.userData = userData;
-      //     let status = res.data.status; //状态码
-      //     if (status == 200) {
-      //       console.log(this.userData);
-      //     } else {
-      //       console.log(status);
-      //     }
-      //   });
-      this.userData = [
-        {
-          userID: "1",
-          userName: "小王",
-          userPhone: "1388888888",
-          userStatus: "在线",
-          userAddress: "小王家里",
-          lastLogin: "2018-12-01 10:00"
-        },
-        {
-          userID: "2",
-          userName: "大王",
-          userPhone: "1388888888",
-          userStatus: "离线",
-          userAddress: "小王家里",
-          lastLogin: "2018-12-01 10:00"
-        },
-        {
-          userID: "1",
-          userName: "小王",
-          userPhone: "1388888888",
-          userStatus: "在线",
-          userAddress: "小王家里",
-          lastLogin: "2018-12-01 10:00"
-        }
-      ];
+      this.$axios
+        .post(this.urlInit)
+        .then(res => {
+          let userData = res.data.userData.data;
+          this.userData = userData;
+          // let status = res.data.status; //状态码
+          // if (status == 200) {
+          //   console.log(this.userData);
+          // } else {
+          //   console.log(status);
+          // }
+        });
+      // this.userData = [
+      //   {
+      //     userID: "1",
+      //     userName: "小王",
+      //     userPhone: "1388888888",
+      //     userStatus: "在线",
+      //     userAddress: "小王家里",
+      //     lastLogin: "2018-12-01 10:00"
+      //   },
+      //   {
+      //     userID: "2",
+      //     userName: "大王",
+      //     userPhone: "1388888888",
+      //     userStatus: "离线",
+      //     userAddress: "小王家里",
+      //     lastLogin: "2018-12-01 10:00"
+      //   },
+      //   {
+      //     userID: "1",
+      //     userName: "小王",
+      //     userPhone: "1388888888",
+      //     userStatus: "在线",
+      //     userAddress: "小王家里",
+      //     lastLogin: "2018-12-01 10:00"
+      //   }
+      // ];
     },
     filterStatus(value, row) {
       return row.userStatus === value;
@@ -142,52 +143,18 @@ export default {
         .then(res => {
           let userData = res.data.userData.data;
           this.userData = userData;
-          let status = res.data.status; //状态码
-          if (status == 200) {
-            console.log(this.userData);
-          } else {
-            console.log(status);
-          }
+          // let status = res.data.status; //状态码
+          // if (status == 200) {
+          //   console.log(this.userData);
+          // } else {
+          //   console.log(status);
+          // }
         });
     },
-    handleOrder(row) {
-      // this.$axios
-      //   .post(this.urlSelectOrder, {
-      //     orderID: row.userID
-      //   })
-      //   .then(res => {
-      //     let orderData = res.data.orderData.data;
-      //     this.orderObj = orderData;
-      //     let status = res.data.status; //状态码
-      //     if (status == 200) {
-      //       console.log(this.orderObj);
-      //     } else {
-      //       console.log(status);
-      //     }
-      //   });
-      this.orderObj = {
-        orderID: "2",
-        startDate: "2019-02-25 12:01:00",
-        finishData: "-",
-        user: "沈庭杉",
-        deliver: "陈信宏",
-        shopName: "金沙江路店",
-
-        orderInfo: "帕帕罗尼披萨",
-        orderStatus: "正在配送",
-        orderAmount: "120.0"
-      };
-      this.$router.push({
-        name: "SuperOrderDetail",
-        query: {
-          orderID: this.orderObj.orderID,
-          startDate: this.orderObj.date,
-          orderInfo: this.orderObj.orderInfo,
-          deliver: this.orderObj.deliver,
-          user: this.orderObj.user
-        }
-      });
-    }
+    clear(){
+      this.selectWord = "";
+      this.getData()
+    },
   }
 };
 </script>

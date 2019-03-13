@@ -38,8 +38,8 @@
         </el-table-column>
         <el-table-column label="操作" width="250" align="center">
           <template slot-scope="scope">
-            <el-button type="text" icon="el-icon-view" @click="openDetails(scope.row)">查看</el-button>
-            <el-button type="text" icon="el-icon-close" @click="delDeliver(scope.row)">解雇</el-button>
+            <el-button v-if="scope.row.deliverStatus=='配送中'" type="text" icon="el-icon-view" @click="openDetails(scope.row)">查看配送信息</el-button>
+            <!-- <el-button type="text" icon="el-icon-close" @click="delDeliver(scope.row)">解雇</el-button> -->
           </template>
         </el-table-column>
       </el-table>
@@ -83,44 +83,44 @@ export default {
     },
 
     getData() {
-      //     tmp_data = [
-      //     {
-      //       deliverID: "1",
-      //       deliverName: "吴青峰",
-      //       phone: "13816666666",
-      //       shopID: "天下第一店",
-      //       deliverStatus: "空闲"
-      //     },
-      //     {
-      //       deliverID: "2",
-      //       deliverName: "陈信宏",
-      //       phone: "13816666667",
-      //       shopID: "天下第一店",
-      //       deliverStatus: "配送中"
-      //     },
-      //     {
-      //       deliverID: "3",
-      //       deliverName: "小飞象",
-      //       phone: "13816666668",
-      //       shopID: "天下第一店",
-      //       deliverStatus: "配送中"
-      //     }
-      //   ];
-      this.$axios
-        .post(this.urlInit, {
-          shopID: sessionStorage.getItem("shopID")
-        })
-        .then(res => {
-          console.log(this.orderData);
-          let deliverData = res.data.deliverData.data;
-          this.deliverData = deliverData;
-          let status = res.data.status; //状态码
-          if (status == 200) {
-            console.log(this.orderData);
-          } else {
-            console.log(this.orderData);
+          this.deliverData = [
+          {
+            deliverID: "1",
+            deliverName: "吴青峰",
+            phone: "13816666666",
+            shopID: "天下第一店",
+            deliverStatus: "空闲"
+          },
+          {
+            deliverID: "2",
+            deliverName: "陈信宏",
+            phone: "13816666667",
+            shopID: "天下第一店",
+            deliverStatus: "配送中"
+          },
+          {
+            deliverID: "3",
+            deliverName: "小飞象",
+            phone: "13816666668",
+            shopID: "天下第一店",
+            deliverStatus: "配送中"
           }
-        });
+        ];
+      // this.$axios
+      //   .post(this.urlInit, {
+      //     shopID: sessionStorage.getItem("shopID")
+      //   })
+      //   .then(res => {
+      //     console.log(this.orderData);
+      //     let deliverData = res.data.deliverData.data;
+      //     this.deliverData = deliverData;
+      //     let status = res.data.status; //状态码
+      //     if (status == 200) {
+      //       console.log(this.orderData);
+      //     } else {
+      //       console.log(this.orderData);
+      //     }
+      //   });
     },
     filterStatus(value, row) {
       return row.deliverStatus === value;
