@@ -10,7 +10,6 @@
     </div>
     <div class="container">
       <div class="handle-box">
-        <!-- <el-button type="primary" icon="delete" class="handle-del mr10" @click="delAll">批量删除</el-button> -->
         <el-select v-model="select_cate" filterable placeholder="筛选条件" class="handle-select mr10">
           <el-option key="1" label="订单编号" value="订单编号"></el-option>
           <el-option key="2" label="配送员" value="配送员"></el-option>
@@ -27,10 +26,11 @@
           range-separator="至"
           start-placeholder="开始时间"
           end-placeholder="结束时间"
+          :clearable="false"
         ></el-date-picker>
         <el-button type="primary" icon="search" @click="search">搜索</el-button>
         <el-button type="plain" icon="search" @click="clear">清除</el-button>
-        <el-button type="plain" icon="search" @click="getData">清除</el-button>
+        <el-button type="plain" icon="search" @click="getData">刷新</el-button>
         <br>
       </div>
       <el-table :data="orderData" ref="filterTable" border class="table" fit>
@@ -167,8 +167,8 @@ export default {
     getData() {
       this.$axios
         .post(this.urlInit, {
-          // shopID: sessionStorage.getItem("shopID")
-          shopID: "1"
+          shopID: sessionStorage.getItem("shopID")
+          // shopID: "1"
         })
         .then(res => {
           let orderData = res.data.orderData.data;
@@ -225,29 +225,55 @@ export default {
           break;
       }
 
-      console.log("orderid:", this.orderID);
-      console.log("deliverid:", this.deliverID);
-      console.log("startTime:", typeof this.select_date[1]);
-      console.log("shopid:", typeof sessionStorage.getItem("shopID"));
-      this.$axios
-        .post(this.urlSelect, {
-          orderID: this.orderID,
-          deliverID: this.deliverID,
-          startTime: this.select_date[0],
-          endTime: this.select_date[1],
-          shopID: sessionStorage.getItem("shopID")
-        })
-        .then(res => {
-          let orderData = res.data.orderData.data;
-          this.orderData = orderData;
-          let status = res.data.status; //状态码
-          if (status == 200) {
-            console.log(this.orderData);
-            console.log(sessionStorage.getItem("shopID"));
-          } else {
-            console.log(status);
-          }
-        });
+      // console.log("orderid:", this.orderID);
+      // console.log("deliverid:", this.deliverID);
+      // console.log("select_date:", this.select_date);
+      // console.log("shopid:", sessionStorage.getItem("shopID"));
+      if (!this.select_date[0] || !this.select_date[1]) {
+        console.log("date为空");
+        this.$axios
+          .post(this.urlSelect, {
+            orderID: this.orderID,
+            deliverID: this.deliverID,
+            startTime: "-1",
+            endTime: "-1",
+            // shopID: sessionStorage.getItem("shopID")
+            shopID: "1"
+          })
+          .then(res => {
+            let orderData = res.data.orderData.data;
+            this.orderData = orderData;
+            let status = res.data.status; //状态码
+            if (status == 200) {
+              console.log(this.orderData);
+              console.log(sessionStorage.getItem("shopID"));
+            } else {
+              console.log(status);
+            }
+          });
+      } else {
+        console.log("date不为空");
+        this.$axios
+          .post(this.urlSelect, {
+            orderID: this.orderID,
+            deliverID: this.deliverID,
+            startTime: this.select_date[0],
+            endTime: this.select_date[1],
+            shopID: sessionStorage.getItem("shopID")
+            // shopID: "1"
+          })
+          .then(res => {
+            let orderData = res.data.orderData.data;
+            this.orderData = orderData;
+            let status = res.data.status; //状态码
+            if (status == 200) {
+              console.log(this.orderData);
+              console.log(sessionStorage.getItem("shopID"));
+            } else {
+              console.log(status);
+            }
+          });
+      }
     },
     openDetails(row) {
       // this.$axios
@@ -289,13 +315,19 @@ export default {
       //     user: row.user
       //   }
       // });
-      console.log("row:", row.orderID);
+      console.log("row:", row);
     },
     goTo() {
       this.$router.push("/dashboard2");
     },
     formatter(row, column) {
-      return row.orderInfo;
+      return row.startDate;
+    },
+    clear() {
+      this.select_cate = "";
+      this.select_word = "";
+      this.select_date = "";
+      this.getData();
     }
   }
 };

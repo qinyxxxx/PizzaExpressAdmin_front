@@ -9,31 +9,46 @@
       </el-breadcrumb>
     </div>
     <div class="container">
-      <div align="left">
-        <img :src="picURL">
-        <br>
-        <br>
-        状态：{{this.$route.query.pizzaStatus}}
-        <br>
-        <br>
-        编号：{{this.$route.query.pizzaID}}
-        <br>
-        <br>
-        名字：{{this.$route.query.pizzaName}}
-        <br>
-        <br>
-        描述：{{this.$route.query.description}}
-        <br>
-        <br>
-        原料：{{this.$route.query.formula}}
-        <br>
-        <br>
-        价格（9寸）：{{this.$route.query.price9}}
-        <br>
-        <br>
-        价格（12寸）：{{this.$route.query.price12}}
-      </div>
-      <div align="right">right!</div>
+      <!-- <el-row :gutter="20">
+        <el-col :span="16">
+          <div class="grid-content bg-purple"></div>
+        </el-col>
+        <el-col :span="8">
+          <div class="grid-content bg-purple"></div>
+        </el-col>
+      </el-row>-->
+      <el-row :gutter="20">
+        <el-col :span="10">
+          <div id="pizzaChart"></div>
+        </el-col>
+        <el-col :span="10">
+          <div class="order-info">
+            <img :src="picURL">
+            <br>
+            <br>
+            状态：{{this.$route.query.pizzaStatus}}
+            <br>
+            <br>
+            编号：{{this.$route.query.pizzaID}}
+            <br>
+            <br>
+            名字：{{this.$route.query.pizzaName}}
+            <br>
+            <br>
+            描述：{{this.$route.query.description}}
+            <br>
+            <br>
+            原料：{{this.$route.query.formula}}
+            <br>
+            <br>
+            价格（9寸）：{{this.$route.query.price9}}
+            <br>
+            <br>
+            价格（12寸）：{{this.$route.query.price12}}
+          </div>
+        </el-col>
+      </el-row>
+      <!-- <div align="right" id="pizzaChart" style="width:50%; height:400px;"></div> -->
     </div>
   </div>
 </template>
@@ -51,34 +66,57 @@ export default {
   methods: {
     drawPizzaChart() {
       this.pizzaChart = echarts.init(document.getElementById("pizzaChart"));
-      this.chartColumn.setOption({
-        title: { text: "今日各种披萨销量" },
-        tooltip: {},
+      this.pizzaChart.setOption({
+        title: { text: "近半年销量" },
+        tooltip: {
+          trigger: "axis"
+        },
+        legend: {
+          data: ["月销售额"]
+        },
+        grid: {
+          left: "3%",
+          right: "4%",
+          bottom: "3%",
+          containLabel: true
+        },
         xAxis: {
-          data: [
-            "韩式烤肉披萨",
-            "照烧风味牛肉土豆披萨",
-            "豪华尊享披萨",
-            "意式烤肠披萨",
-            "多重浓汁披萨",
-            "BBQ鸡肉披萨"
-          ],
           type: "category",
+          boundaryGap: false,
+          data: [
+            "2018/09",
+            "2018/10",
+            "2018/11",
+            "2018/12",
+            "2019/02",
+            "2019/03"
+          ],
           axisLabel: {
-            interval: 0,
-            rotate: 20
+            interval: 0
           }
         },
-        yAxis: {},
+        yAxis: {
+          type: "value"
+        },
         series: [
           {
-            name: "销量",
-            type: "bar",
-            data: [10, 20, 36, 10, 10, 20]
+            name: "月销量",
+            type: "line",
+            stack: "总量",
+            data: [1200, 1320, 1010, 1340, 900, 2300]
           }
         ]
       });
+    },
+    drawCharts() {
+      this.drawPizzaChart();
     }
+  },
+  mounted: function() {
+    this.drawCharts();
+  },
+  updated: function() {
+    this.drawCharts();
   }
 };
 </script>

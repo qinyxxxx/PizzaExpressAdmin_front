@@ -54,7 +54,7 @@
                       ]
                     },
                     {
-                        icon: 'el-icon-pizza-wendangguanli1',
+                        icon: 'el-icon-pizza-yingxiaozhushou1',
                         index: 'order',
                         title: '订单情况'
                     },

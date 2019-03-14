@@ -57,51 +57,51 @@ export default {
     submitForm() {
       if (this.radio == "1") this.url = this.urlShop;
       else this.url = this.urlSuper;
-      // this.$axios
-      //   .get(this.url, {
-      //     params: {
-      //       account: this.ruleForm.username,
-      //       password: this.ruleForm.password
-      //     }
-      //   })
-      //   .then(res => {
-      //     let status = res.data.status; //状态码
-      //     let msg = "";
-      //     if (status == 200) {
-      //       msg = "登录成功";
-      //       sessionStorage.setItem("shopID", res.data.shopID);
-      //       sessionStorage.setItem("account", res.data.account);
-      //       console.log(sessionStorage.getItem("account:", sessionStorage.getItem('shopID')));
-      //       // 存储路由权限
-      //       // let permissionList = res.data.permissionList[0].split(", ");
-      //       // sessionStorage.setItem("permissionList", JSON.stringify(permissionList));
-      //       // 菜单权限
-      //       // let menu_list = JSON.parse(res.data.menuList[0])
-      //       // // let menu_list = menu.menu;
-      //       // sessionStorage.setItem("menu_list", JSON.stringify(menu_list));
-      //       this.$message({
-      //         message: msg,
-      //         type: "success"
-      //       });
-      //       setTimeout(() => {
-      //         console.log(this.radio)
-      //         if (this.radio == "1") this.$router.push("/dashboard");
-      //         //跳转到工厂管理员
-      //         else this.$router.push("/dashboard2");
-      //         //跳转到系统管理员
-      //       }, 1000);
-      //     } else {
-      //       msg = "用户名或者密码错误";
-      //       this.$message({
-      //         message: msg,
-      //         type: "error"
-      //       });
-      //     }
-      //   })
-      //   .catch(function(err) {
-      //     console.log(err);
-      //   });
-      this.$router.push("/dashboard");
+      this.$axios
+        .get(this.url, {
+          params: {
+            account: this.ruleForm.username,
+            password: this.ruleForm.password
+          }
+        })
+        .then(res => {
+          let status = res.data.status; //状态码
+          let msg = "";
+          if (status == 200) {
+            msg = "登录成功";
+            sessionStorage.setItem("shopID", res.data.shopID);
+            sessionStorage.setItem("account", res.data.account);
+            console.log(sessionStorage.getItem("account:", sessionStorage.getItem('shopID')));
+            // 存储路由权限
+            // let permissionList = res.data.permissionList[0].split(", ");
+            // sessionStorage.setItem("permissionList", JSON.stringify(permissionList));
+            // 菜单权限
+            // let menu_list = JSON.parse(res.data.menuList[0])
+            // // let menu_list = menu.menu;
+            // sessionStorage.setItem("menu_list", JSON.stringify(menu_list));
+            this.$message({
+              message: msg,
+              type: "success"
+            });
+            setTimeout(() => {
+              console.log(this.radio)
+              if (this.radio == "1") this.$router.push("/dashboard");
+              //跳转到工厂管理员
+              else this.$router.push("/dashboard2");
+              //跳转到系统管理员
+            }, 1000);
+          } else {
+            msg = "用户名或者密码错误";
+            this.$message({
+              message: msg,
+              type: "error"
+            });
+          }
+        })
+        .catch(function(err) {
+          console.log(err);
+        });
+      // this.$router.push("/dashboard");
     }
   }
 };

@@ -48,21 +48,21 @@ lazyAMapApiLoaderInstance.load().then(() => {
 //     // 如果是管理员权限则可进入，这里只是简单的模拟管理员权限而已
 //     role === 'admin' ? next() : next('/403');
 // } 
-// router.beforeEach((to, from, next) => {
-//     let account = sessionStorage.getItem('account');
-//     console.log(account)
-//     if (to.path == '/login') {
-//         // console.log("path==login")
-//         next();
-//     }
-//     else if (account) {
-//         console.log("account")
-//         next();
-//     } else {
-//         console.log("没有登录")
-//         next('/login');
-//     }
-// })
+router.beforeEach((to, from, next) => {
+    let account = sessionStorage.getItem('account');
+    console.log(account)
+    if (to.path == '/login') {
+        // console.log("path==login")
+        next();
+    }
+    else if (account) {
+        console.log("account")
+        next();
+    } else {
+        console.log("没有登录")
+        next('/login');
+    }
+})
 
 new Vue({
     router,

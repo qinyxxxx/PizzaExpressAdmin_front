@@ -83,44 +83,45 @@ export default {
     },
 
     getData() {
-          this.deliverData = [
-          {
-            deliverID: "1",
-            deliverName: "吴青峰",
-            phone: "13816666666",
-            shopID: "天下第一店",
-            deliverStatus: "空闲"
-          },
-          {
-            deliverID: "2",
-            deliverName: "陈信宏",
-            phone: "13816666667",
-            shopID: "天下第一店",
-            deliverStatus: "配送中"
-          },
-          {
-            deliverID: "3",
-            deliverName: "小飞象",
-            phone: "13816666668",
-            shopID: "天下第一店",
-            deliverStatus: "配送中"
+        //   this.deliverData = [
+        //   {
+        //     deliverID: "1",
+        //     deliverName: "吴青峰",
+        //     phone: "13816666666",
+        //     shopID: "天下第一店",
+        //     deliverStatus: "空闲"
+        //   },
+        //   {
+        //     deliverID: "2",
+        //     deliverName: "陈信宏",
+        //     phone: "13816666667",
+        //     shopID: "天下第一店",
+        //     deliverStatus: "配送中"
+        //   },
+        //   {
+        //     deliverID: "3",
+        //     deliverName: "小飞象",
+        //     phone: "13816666668",
+        //     shopID: "天下第一店",
+        //     deliverStatus: "配送中"
+        //   }
+        // ];
+      this.$axios
+        .post(this.urlInit, {
+          shopID: sessionStorage.getItem("shopID")
+          // shopID: '1'
+        })
+        .then(res => {
+          console.log(this.orderData);
+          let deliverData = res.data.deliverData.data;
+          this.deliverData = deliverData;
+          let status = res.data.status; //状态码
+          if (status == 200) {
+            console.log(this.orderData);
+          } else {
+            console.log(this.orderData);
           }
-        ];
-      // this.$axios
-      //   .post(this.urlInit, {
-      //     shopID: sessionStorage.getItem("shopID")
-      //   })
-      //   .then(res => {
-      //     console.log(this.orderData);
-      //     let deliverData = res.data.deliverData.data;
-      //     this.deliverData = deliverData;
-      //     let status = res.data.status; //状态码
-      //     if (status == 200) {
-      //       console.log(this.orderData);
-      //     } else {
-      //       console.log(this.orderData);
-      //     }
-      //   });
+        });
     },
     filterStatus(value, row) {
       return row.deliverStatus === value;

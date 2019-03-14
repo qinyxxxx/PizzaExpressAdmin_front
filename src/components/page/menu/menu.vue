@@ -292,53 +292,53 @@ export default {
           console.log(status);
         }
       });
-      if ((this.pizzaData = [])) {
-        this.pizzaData = [
-          {
-            pizzaID: "1",
-            pizzaName: "夏威夷芝心披萨",
-            description: "好吃",
-            flour: 2,
-            egg: 1,
-            cheese: 4,
-            vegetable: 2,
-            meat: 3,
-            pizzaStatus: "上架",
-            picURL:
-              "http://pic.dominos.com.cn:8000/ApiPicture/20190306/3caea7802d1b4039bc51f1822f447a5f.jpg",
-            price9: "99",
-            price12: "122"
-          },
-          {
-            pizzaID: "1",
-            pizzaName: "夏威夷芝心披萨",
-            description: "好吃",
-            pizzaStatus: "下架",
-            flour: 2,
-            egg: 1,
-            cheese: 4,
-            vegetable: 2,
-            meat: 3,
-            price9: "99",
-            picURL: "",
-            price12: "122"
-          },
-          {
-            pizzaID: "1",
-            pizzaName: "夏威夷芝心披萨",
-            description: "好吃",
-            flour: 2,
-            egg: 1,
-            cheese: 4,
-            vegetable: 2,
-            meat: 3,
-            pizzaStatus: "下架",
-            price9: "99",
-            picURL: "",
-            price12: "122"
-          }
-        ];
-      }
+      // if ((this.pizzaData = [])) {
+      //   this.pizzaData = [
+      //     {
+      //       pizzaID: "1",
+      //       pizzaName: "夏威夷芝心披萨",
+      //       description: "好吃",
+      //       flour: 2,
+      //       egg: 1,
+      //       cheese: 4,
+      //       vegetable: 2,
+      //       meat: 3,
+      //       pizzaStatus: "上架",
+      //       picURL:
+      //         "http://pic.dominos.com.cn:8000/ApiPicture/20190306/3caea7802d1b4039bc51f1822f447a5f.jpg",
+      //       price9: "99",
+      //       price12: "122"
+      //     },
+      //     {
+      //       pizzaID: "1",
+      //       pizzaName: "夏威夷芝心披萨",
+      //       description: "好吃",
+      //       pizzaStatus: "下架",
+      //       flour: 2,
+      //       egg: 1,
+      //       cheese: 4,
+      //       vegetable: 2,
+      //       meat: 3,
+      //       price9: "99",
+      //       picURL: "",
+      //       price12: "122"
+      //     },
+      //     {
+      //       pizzaID: "1",
+      //       pizzaName: "夏威夷芝心披萨",
+      //       description: "好吃",
+      //       flour: 2,
+      //       egg: 1,
+      //       cheese: 4,
+      //       vegetable: 2,
+      //       meat: 3,
+      //       pizzaStatus: "下架",
+      //       price9: "99",
+      //       picURL: "",
+      //       price12: "122"
+      //     }
+      //   ];
+      // }
     },
     filterStatus(value, row) {
       return row.pizzaStatus === value;
@@ -370,10 +370,10 @@ export default {
           }
         });
     },
-    clear(){
+    clear() {
       this.select_cate = "";
       this.select_word = "";
-      this.getData()
+      this.getData();
     },
     addPizza() {
       this.addObj = {
@@ -474,14 +474,9 @@ export default {
         .then(res => {
           let pizzaAfterEdit = res.data.itemData.data;
           this.pizzaData.row = pizzaAfterEdit;
-          let status = res.data.status; //状态码
-          if (status == 200) {
-            console.log("update status:", status);
-            console.log("after update", this.this.pizzaData.row);
-          } else {
-            console.log(status);
-          }
+          this.$message.success("修改成功！");
         });
+        
     },
     handleAvatarSuccess(res, file) {
       // this.imageUrl = URL.createObjectURL(file.raw);
