@@ -81,12 +81,12 @@ export default new Router({
                     component: resolve => require(['../components/page/deliver/deliver.vue'], resolve),
                     meta: { title: '配送员情况' }
                 },
-                {
-                    // map
-                    path: '/map',
-                    component: resolve => require(['../components/page/map.vue'], resolve),
-                    meta: { title: '配送员位置' }
-                },
+                // {
+                //     // map
+                //     path: '/map',
+                //     component: resolve => require(['../components/page/map.vue'], resolve),
+                //     meta: { title: '配送员位置' }
+                // },
                 {
                     // 拖拽列表组件
                     path: '/drag',

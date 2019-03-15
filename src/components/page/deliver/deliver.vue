@@ -108,8 +108,8 @@ export default {
         // ];
       this.$axios
         .post(this.urlInit, {
-          shopID: sessionStorage.getItem("shopID")
-          // shopID: '1'
+          // shopID: sessionStorage.getItem("shopID")
+          shopID: '1'
         })
         .then(res => {
           console.log(this.orderData);

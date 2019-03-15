@@ -9,46 +9,30 @@
       </el-breadcrumb>
     </div>
     <div class="container">
-      <!-- <el-row :gutter="20">
-        <el-col :span="16">
-          <div class="grid-content bg-purple"></div>
+      <el-row :gutter="4">
+        <el-col :span="9">
+          <img :src="picURL">
         </el-col>
-        <el-col :span="8">
-          <div class="grid-content bg-purple"></div>
-        </el-col>
-      </el-row>-->
-      <el-row :gutter="20">
-        <el-col :span="10">
-          <div id="pizzaChart"></div>
-        </el-col>
-        <el-col :span="10">
-          <div class="order-info">
-            <img :src="picURL">
-            <br>
-            <br>
-            状态：{{this.$route.query.pizzaStatus}}
-            <br>
-            <br>
-            编号：{{this.$route.query.pizzaID}}
-            <br>
-            <br>
-            名字：{{this.$route.query.pizzaName}}
-            <br>
-            <br>
-            描述：{{this.$route.query.description}}
-            <br>
-            <br>
-            原料：{{this.$route.query.formula}}
-            <br>
-            <br>
-            价格（9寸）：{{this.$route.query.price9}}
-            <br>
-            <br>
-            价格（12寸）：{{this.$route.query.price12}}
-          </div>
+        <el-col :span="15">
+          <el-table :data="pizzaData" style="width: 100%" border fit>
+            <el-table-column prop="pizzaID" label="ID" width="100"></el-table-column>
+            <el-table-column prop="pizzaStatus" label="当前状态" width="100"></el-table-column>
+            <el-table-column prop="pizzaName" label="名称" width="100"></el-table-column>
+            <el-table-column prop="description" label="描述" :formatter="formatter"></el-table-column>
+            <el-table-column prop="formula" label="原料" width="100"></el-table-column>
+            <el-table-column prop="price9" label="价格（9寸）" width="100"></el-table-column>
+            <el-table-column prop="price12" label="价格（12寸）" width="100"></el-table-column>
+          </el-table>
         </el-col>
       </el-row>
-      <!-- <div align="right" id="pizzaChart" style="width:50%; height:400px;"></div> -->
+      <br>
+      <el-row>
+        <div id="pizzaChart" style="width:100%; height:500px"></div>
+      </el-row>
+      <br>
+      <el-row>
+        <div id="pizzaShopChart" style="width:100%; height:500px"></div>
+      </el-row>
     </div>
   </div>
 </template>
@@ -58,12 +42,27 @@ import echarts from "echarts";
 export default {
   data() {
     return {
-      pizzaChart: "",
+      pizzaData: [
+        {
+          pizzaID: this.$route.query.pizzaID,
+          pizzaStatus: this.$route.query.pizzaStatus,
+          pizzaName: this.$route.query.pizzaName,
+          description: this.$route.query.description,
+          formula: this.$route.query.formula,
+          price9: this.$route.query.price9,
+          price12: this.$route.query.price9
+        }
+      ],
+      pizzaChart: null,
+      pizzaShopChart: null,
       picURL: this.$route.query.picURL
     };
   },
 
   methods: {
+    formatter(row, column) {
+      return row.description;
+    },
     drawPizzaChart() {
       this.pizzaChart = echarts.init(document.getElementById("pizzaChart"));
       this.pizzaChart.setOption({
@@ -108,8 +107,48 @@ export default {
         ]
       });
     },
+    drawPizzaShopChart() {
+      this.chartColumn = echarts.init(
+        document.getElementById("pizzaShopChart")
+      );
+      this.chartColumn.setOption({
+        title: { text: "各工厂今日销量" },
+        tooltip: {},
+        xAxis: {
+          data: [
+            "华师大店",
+            "上大店",
+            "上师大店",
+            "复旦店",
+            "同济店",
+            "交大店",
+            "上外店",
+            "华理店"
+          ],
+          type: "category",
+          axisLabel: {
+            interval: 0,
+            rotate: 20
+          }
+        },
+        yAxis: {},
+        series: [
+          {
+            name: "今日销量",
+            type: "bar",
+            data: [10, 20, 36, 10, 10, 20, 5, 40],
+            itemStyle:{
+              normal:{
+                color: '#106EDD'
+              }
+            }
+          }
+        ]
+      });
+    },
     drawCharts() {
       this.drawPizzaChart();
+      this.drawPizzaShopChart();
     }
   },
   mounted: function() {
