@@ -23,13 +23,13 @@
         </el-form>
       </el-col>
 
-      <el-table :data="warehouseData" border class="table" @selection-change="selsChange">
-        <el-table-column type="selection" width="55"></el-table-column>
-        <el-table-column prop="product_id" label="ID" width="100"></el-table-column>
-        <el-table-column prop="product_name" label="成品名称" sortable width="200"></el-table-column>
-        <el-table-column prop="product_date" label="生产日期" width="150"></el-table-column>
-        <el-table-column prop="product_note" label="详细说明" width="320"></el-table-column>
-        <el-table-column prop="product_quantity" label="剩余数量" width="140"></el-table-column>
+      <el-table :data="warehouseData" border class="table" ><!--@selection-change="selsChange"-->
+        <!--<el-table-column type="selection" width="55"></el-table-column>-->
+        <el-table-column prop="itemId" label="ID" width="150"></el-table-column>
+        <el-table-column prop="itemName" label="成品名称" sortable width="200"></el-table-column>
+        <el-table-column prop="price" label="价格" width="150"></el-table-column>
+        <el-table-column prop="description" label="详细说明" width="320"></el-table-column>
+        <el-table-column prop="count" label="剩余数量" width="150"></el-table-column>
         <el-table-column label="操作" width="155">
           <template scope="scope">
             <el-button type="primary"  size="small" >增加库存</el-button>
@@ -52,34 +52,51 @@
     export default {
       data(){
         return {
+          url_product_quantity: "/pizzaexpress/menu/getmenubyshopid", //返回这个工厂的成品信息
+
+
           filters: {
             name: ''
           },
           warehouseData: [
             {
-              product_id:1,
-              product_name:"美国风情土豆培根比萨",
-              product_sale_count:10,
-              product_date:"2019-3-6",
-              product_note:"一定要xxx家的！",
-              product_quantity:5,
+              itemId:1,
+              itemName:"美国风情土豆培根比萨",
+              count:10,
+              price:"2019-3-6",
+              description:"一定要xxx家的！"
             },
             {
-              product_id:2,
-              product_name:"尊享牛油果芝士鸡比萨",
-              product_sale_count:100,
-              product_date:"2019-3-5",
-              product_note:"一定要xxx家的！",
-              product_quantity:10,
+              itemId:2,
+              itemName:"尊享牛油果芝士鸡比萨",
+              count:100,
+              price:"2019-3-5",
+              description:"一定要xxx家的！"
             }
           ],
-          sels: [],
+          //sels: [],
         }
       },
-    methods: {
-      selsChange: function (sels) {
-        this.sels = sels;
+      created() {
+        this.getData();
       },
+    methods: {
+      getData(){
+        this.$axios
+          .post(this.url_product_quantity, {
+            //shopID: sessionStorage.getItem("shopID")
+            shopID:'1' //因为没有login
+          })
+          .then(res => {
+            let warehouseData = res.data.itemData.data;
+            this.warehouseData = warehouseData;
+          });
+      },
+
+
+      // selsChange: function (sels) {
+      //   this.sels = sels;
+      // },
     }
     }
 </script>

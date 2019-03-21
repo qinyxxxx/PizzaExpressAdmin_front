@@ -63,6 +63,7 @@
       components: {ElFormItem},
       data(){
         return {
+          url_factory_info: "/pizzaexpress/shop/getshopbyid", //返回这个工厂的信息
           chartColumn: null,
           chartBar: null,
           name:"three",
@@ -78,6 +79,9 @@
             }
           ]
         }
+      },
+      created() {
+        this.getData();
       },
       methods: {
         drawColumnChart() {
@@ -157,7 +161,26 @@
           this.drawLineChart()
           // this.drawBarChart()
           // this.drawPieChart()
-        }
+        },
+        getData() {
+          this.$axios
+            .post(this.url_factory_info, {
+              //shopID: sessionStorage.getItem("shopID")
+              shopID:'1' //因为没有login
+            })
+            .then(res => {
+              //console.log(this.factory_info);
+              let factory_info = res.data.shopData.data;
+              this.factory_info = factory_info;
+              // let status = res.data.status; //状态码
+              // if (status == 200) {
+              //   console.log(this.orderData);
+              // } else {
+              //   console.log(this.orderData);
+              // }
+            });
+        },
+
       },
       mounted: function () {
         this.drawCharts()
