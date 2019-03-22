@@ -157,7 +157,7 @@ export default {
     },
     openDetails(row) {
       this.$router.push({
-        name: "deliverDetail",
+        name: "DeliverDetail",
         params: {
           detail: row
         }
