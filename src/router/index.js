@@ -29,10 +29,10 @@ export default new Router({
                     path: '/warehouse_material',
                     component: resolve => require(['../components/page/warehouse_material.vue'], resolve),
                     meta: { title: '原料库存信息' },
-                    path: '/warehouse',
-                    name: 'Warehouse',
-                    component: resolve => require(['../components/page/warehouse.vue'], resolve),
-                    meta: { title: '库存情况' }
+                    // path: '/warehouse',
+                    // name: 'Warehouse',
+                    // component: resolve => require(['../components/page/warehouse.vue'], resolve),
+                    // meta: { title: '库存情况' }
                 },
               {
                 path: '/warehouse_product',
