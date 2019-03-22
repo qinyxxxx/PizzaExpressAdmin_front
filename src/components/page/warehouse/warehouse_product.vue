@@ -32,7 +32,7 @@
         <el-table-column prop="description" label="详细说明" width="280"></el-table-column>
         <el-table-column prop="count" label="剩余数量" width="150"></el-table-column>
         <el-table-column label="操作" width="180">
-          <template scope="scope">
+          <template slot-scope="scope">
             <!--<el-input-number  v-model="warehouseData.makeCount"  :min="0" :max="1000"></el-input-number>-->
             <el-button type="primary"  size="small" @click="show_add_product(scope.$index, scope.row)">增加库存</el-button>
             <!--<el-button type="danger" size="small" >下架</el-button>-->
