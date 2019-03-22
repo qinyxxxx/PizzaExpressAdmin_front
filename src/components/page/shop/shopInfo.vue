@@ -22,24 +22,24 @@
         <br/><br/>
       </div>
 
-      <el-table :data="factory_info" border class="table" @selection-change="selsChange">
-        <el-table-column type="selection" width="55"></el-table-column>
+      <el-table :data="factory_info" border class="table" ><!--@selection-change="selsChange"-->
+        <!--<el-table-column type="selection" width="55"></el-table-column>-->
         <el-table-column prop="shopName" label="工厂名称" width="150"></el-table-column>
-        <el-table-column prop="shopId" label="工厂ID" width="120"></el-table-column>
+        <el-table-column prop="shopId" label="工厂ID" width="130"></el-table-column>
         <el-table-column prop="salesVolume" label="接单量（份）" width="120"></el-table-column>
         <el-table-column prop="phone" label="电话号码" width="120"></el-table-column>
-        <el-table-column prop="address" label="工厂地址" width="180"></el-table-column>
+        <el-table-column prop="address" label="工厂地址" width="200"></el-table-column>
         <el-table-column prop="startTime" label="营业时间" width="100"></el-table-column>
         <el-table-column prop="endTime" label="打烊时间" width="100"></el-table-column>
-        <el-table-column label="操作" width="180">
+        <el-table-column label="操作" width="200">
           <template scope="scope">
             <el-button type="primary" size="small" @click="factory_edit(scope.$index, scope.row)" >修改</el-button>
-            <el-button type="danger" size="small" >暂停营业</el-button>
+            <el-button type="danger" size="small" @click="factory_delete(scope.$index, scope.row)"  >暂停营业</el-button>
           </template>
         </el-table-column>
       </el-table>
       <div :span="24" class="toolbar" style="padding:10px;">
-        <el-button type="danger"  :disabled="this.sels.length===0">批量停业</el-button>
+        <!--<el-button type="danger"  :disabled="this.sels.length===0">批量停业</el-button>-->
         <el-pagination layout="prev, pager, next" background @current-change="handleCurrentChange" :page-size="8" :total="100" style="float:right;">
         </el-pagination>
       </div>
@@ -182,6 +182,7 @@
         url_factory_info:"/pizzaexpress/shop/getallshops",//显示所有工厂信息
         url_edit_Form: "/pizzaexpress/purchase/getpurchasebyformula", //保存修改工厂信息 需要修改！
         url_add_Form: "/pizzaexpress/shop/insertnewshop", //保存新的工厂信息
+        url_factory_delete:"/pizzaexpress/shop/deleteshop",//删除某个工厂
 
         filters: {
           name: ''
@@ -237,7 +238,7 @@
           startTime:"",
           endTime:""
         },
-        sels:[],
+        //sels:[],
       }
     },
     created() {
@@ -273,7 +274,7 @@
       },
 
      //新增
-      addSubmit: function () {
+      addSubmit() {
         this.$refs.add_Form.validate((valid) => {
           if (valid) {
             this.$confirm('确认提交吗？', '提示', {}).then(() => {
@@ -359,8 +360,24 @@
         });
       },
 
-      selsChange: function (sels) {
-        this.sels = sels;
+      // selsChange: function (sels) {
+      //   this.sels = sels;
+      // },
+      factory_delete(index, row){
+        this.$confirm('确认暂停这家工厂吗？', '提示', {}).then(() => {
+
+          this.$axios
+            .post(this.url_factory_delete, {
+              shopID:row.shopId
+            })
+            .then(res => {
+              this.$message({
+                message: '停业操作完成',
+                type: 'success'
+              });
+              this.getData();
+            });
+        });
       },
     }
   }
