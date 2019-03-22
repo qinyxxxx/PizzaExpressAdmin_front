@@ -63,6 +63,16 @@
                         index: 'menu',
                         title: '菜单管理',
                     },
+                    {
+                        icon: 'el-icon-pizza-tuandui1',
+                        index: 'user',
+                        title: '用户管理',
+                    },
+                    // {
+                    //     icon: 'el-icon-pizza-yingxiaozhushou1',
+                    //     index: 'superOrder',
+                    //     title: '订单管理',
+                    // },
                 ]
             }
         },

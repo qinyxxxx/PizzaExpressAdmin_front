@@ -6,16 +6,16 @@ Vue.use(Router);
 export default new Router({
     routes: [
         // {
-      //     path: '/',
-      //     redirect: '/dashboard'
-      // },
+        //     path: '/',
+        //     redirect: '/dashboard'
+        // },
         {
             path: '/Home',
             component: resolve => require(['../components/common/Home.vue'], resolve),
             meta: { title: '工厂管理员路由描述' },
             children: [
                 {
-                    path: '/dashboard',
+                    path: '/Dashboard',
                     name: 'Dashboard',
                     component: resolve => require(['../components/page/Dashboard.vue'], resolve),
                     meta: { title: '临时首页' }
@@ -23,27 +23,49 @@ export default new Router({
               {
                 path: '/echarts',
                 component: resolve => require(['../components/page/echarts.vue'], resolve),
-                meta: { title: '系统首页' }
+                meta: { title: '工厂首页' }
               },
                 {
                     path: '/warehouse_material',
-                    component: resolve => require(['../components/page/warehouse_material.vue'], resolve),
-                    meta: { title: '原料库存信息' },
+                    // component: resolve => require(['../components/page/warehouse_material.vue'], resolve),
+                    // meta: { title: '原料库存信息' },
                     // path: '/warehouse',
                     // name: 'Warehouse',
                     // component: resolve => require(['../components/page/warehouse.vue'], resolve),
                     // meta: { title: '库存情况' }
+                    component: resolve => require(['../components/page/warehouse/warehouse_material.vue'], resolve),
+                    meta: { title: '原料库存信息' }
                 },
               {
                 path: '/warehouse_product',
-                component: resolve => require(['../components/page/warehouse_product.vue'], resolve),
+                component: resolve => require(['../components/page/warehouse/warehouse_product.vue'], resolve),
                 meta: { title: '成品库存信息' }
               },
-              {
-                path: '/warehouse_emergency',
-                component: resolve => require(['../components/page/warehouse_emergency.vue'], resolve),
-                meta: { title: '库存紧急事件' }
-              },
+              // {
+              //   path: '/warehouse_emergency',
+              //   component: resolve => require(['../components/page/warehouse_emergency.vue'], resolve),
+              //   meta: { title: '库存紧急事件' }
+              // },
+                {
+                    path: '/echarts',
+                    component: resolve => require(['../components/page/echarts.vue'], resolve),
+                    meta: { title: '系统首页' }
+                },
+                // {
+                //     path: '/warehouse_material',
+                //     component: resolve => require(['../components/page/warehouse_material.vue'], resolve),
+                //     meta: { title: '原料库存信息' },
+                // },
+                // {
+                //     path: '/warehouse_product',
+                //     component: resolve => require(['../components/page/warehouse_product.vue'], resolve),
+                //     meta: { title: '成品库存信息' }
+                // },
+                // {
+                //     path: '/warehouse_emergency',
+                //     component: resolve => require(['../components/page/warehouse_emergency.vue'], resolve),
+                //     meta: { title: '库存紧急事件' }
+                // },
                 {
                     path: '/order',
                     name: 'Order',
@@ -85,12 +107,12 @@ export default new Router({
                     component: resolve => require(['../components/page/deliver/deliver.vue'], resolve),
                     meta: { title: '配送员情况' }
                 },
-                {
-                    // map
-                    path: '/map',
-                    component: resolve => require(['../components/page/map.vue'], resolve),
-                    meta: { title: '配送员位置' }
-                },
+                // {
+                //     // map
+                //     path: '/map',
+                //     component: resolve => require(['../components/page/map.vue'], resolve),
+                //     meta: { title: '配送员位置' }
+                // },
                 {
                     // 拖拽列表组件
                     path: '/drag',
@@ -177,6 +199,24 @@ export default new Router({
                     name: 'ShopIncome',
                     component: resolve => require(['../components/page/shop/shopIncome.vue'], resolve),
                     meta: { title: '工厂收益' }
+                },
+                {
+                    path: '/user',
+                    name: 'User',
+                    component: resolve => require(['../components/page/user/user.vue'], resolve),
+                    meta: { title: '用户管理' }
+                },
+                {
+                    path: '/superOrder',
+                    name: 'SuperOrder',
+                    component: resolve => require(['../components/page/order/superOrder.vue'], resolve),
+                    meta: { title: '订单管理' }
+                },
+                {
+                    path: '/superOrderDetail',
+                    name: 'SuperOrderDetail',
+                    component: resolve => require(['../components/page/order/superOrderDetail.vue'], resolve),
+                    meta: { title: '系统订单详情' }
                 },
             ]
         },
