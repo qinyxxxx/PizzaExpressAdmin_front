@@ -19,7 +19,7 @@
       </div>
       <el-table :data="deliverData" ref="filterTable" border class="table" fit>
         <el-table-column prop="deliverID" label="ID" width="150"></el-table-column>
-        <el-table-column prop="deliverName" label="姓名" width="250"></el-table-column>
+        <el-table-column prop="deliverName" label="姓名" :formatter="formatter"></el-table-column>
         <el-table-column prop="phone" label="电话" width="250"></el-table-column>
         <el-table-column
           prop="deliverStatus"
@@ -38,8 +38,8 @@
         </el-table-column>
         <el-table-column label="操作" width="250" align="center">
           <template slot-scope="scope">
-            <el-button type="text" icon="el-icon-view" @click="openDetails(scope.row)">查看</el-button>
-            <el-button type="text" icon="el-icon-close" @click="delDeliver(scope.row)">解雇</el-button>
+            <el-button v-if="scope.row.deliverStatus=='配送中'" type="text" icon="el-icon-view" @click="openDetails(scope.row)">查看配送信息</el-button>
+            <!-- <el-button type="text" icon="el-icon-close" @click="delDeliver(scope.row)">解雇</el-button> -->
           </template>
         </el-table-column>
       </el-table>
@@ -83,32 +83,33 @@ export default {
     },
 
     getData() {
-      //     tmp_data = [
-      //     {
-      //       deliverID: "1",
-      //       deliverName: "吴青峰",
-      //       phone: "13816666666",
-      //       shopID: "天下第一店",
-      //       deliverStatus: "空闲"
-      //     },
-      //     {
-      //       deliverID: "2",
-      //       deliverName: "陈信宏",
-      //       phone: "13816666667",
-      //       shopID: "天下第一店",
-      //       deliverStatus: "配送中"
-      //     },
-      //     {
-      //       deliverID: "3",
-      //       deliverName: "小飞象",
-      //       phone: "13816666668",
-      //       shopID: "天下第一店",
-      //       deliverStatus: "配送中"
-      //     }
-      //   ];
+        //   this.deliverData = [
+        //   {
+        //     deliverID: "1",
+        //     deliverName: "吴青峰",
+        //     phone: "13816666666",
+        //     shopID: "天下第一店",
+        //     deliverStatus: "空闲"
+        //   },
+        //   {
+        //     deliverID: "2",
+        //     deliverName: "陈信宏",
+        //     phone: "13816666667",
+        //     shopID: "天下第一店",
+        //     deliverStatus: "配送中"
+        //   },
+        //   {
+        //     deliverID: "3",
+        //     deliverName: "小飞象",
+        //     phone: "13816666668",
+        //     shopID: "天下第一店",
+        //     deliverStatus: "配送中"
+        //   }
+        // ];
       this.$axios
         .post(this.urlInit, {
-          shopID: sessionStorage.getItem("shopID")
+          // shopID: sessionStorage.getItem("shopID")
+          shopID: '1'
         })
         .then(res => {
           console.log(this.orderData);
@@ -162,6 +163,9 @@ export default {
         }
       });
       console.log("row:", row.deliverID);
+    },
+    formatter(row, column) {
+      return row.deliverName;
     },
     delDeliver(row) {
       this.$axios

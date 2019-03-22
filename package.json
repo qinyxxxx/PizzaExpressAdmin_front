@@ -12,10 +12,11 @@
     "build": "node build/build.js"
   },
   "dependencies": {
+    "ansi-align": "^3.0.0",
     "axios": "^0.18.0",
     "babel-polyfill": "^6.26.0",
-    "echarts": "^4.1.0",
     "easy-mock-cli": "^0.4.3",
+    "echarts": "^4.1.0",
     "element-ui": "^2.5.4",
     "iview": "^3.2.2",
     "mavon-editor": "^2.6.17",
