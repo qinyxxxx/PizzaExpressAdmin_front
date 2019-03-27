@@ -14,12 +14,6 @@ export default new Router({
             component: resolve => require(['../components/common/Home.vue'], resolve),
             meta: { title: '工厂管理员路由描述' },
             children: [
-                {
-                    path: '/Dashboard',
-                    name: 'Dashboard',
-                    component: resolve => require(['../components/page/Dashboard.vue'], resolve),
-                    meta: { title: '临时首页' }
-                },
               {
                 path: '/echarts',
                 component: resolve => require(['../components/page/echarts.vue'], resolve),
@@ -83,18 +77,6 @@ export default new Router({
                     meta: { title: '基本表单' }
                 },
                 {
-                    // 富文本编辑器组件
-                    path: '/editor',
-                    component: resolve => require(['../components/page/VueEditor.vue'], resolve),
-                    meta: { title: '富文本编辑器' }
-                },
-                {
-                    // markdown组件
-                    path: '/markdown',
-                    component: resolve => require(['../components/page/Markdown.vue'], resolve),
-                    meta: { title: 'markdown编辑器' }
-                },
-                {
                     // 图片上传组件
                     path: '/upload',
                     component: resolve => require(['../components/page/Upload.vue'], resolve),
@@ -107,12 +89,6 @@ export default new Router({
                     component: resolve => require(['../components/page/deliver/deliver.vue'], resolve),
                     meta: { title: '配送员情况' }
                 },
-                // {
-                //     // map
-                //     path: '/map',
-                //     component: resolve => require(['../components/page/map.vue'], resolve),
-                //     meta: { title: '配送员位置' }
-                // },
                 {
                     // 拖拽列表组件
                     path: '/drag',
@@ -140,11 +116,6 @@ export default new Router({
                     path: '/403',
                     component: resolve => require(['../components/page/404/403.vue'], resolve),
                     meta: { title: '403' }
-                },
-                {
-                    path: '/test',
-                    component: resolve => require(['../components/test.vue'], resolve),
-                    meta: { title: 'test' }
                 },
                 {
                     path: '/orderDetail',
