@@ -32,7 +32,7 @@
         <el-table-column prop="startTime" label="营业时间" width="100"></el-table-column>
         <el-table-column prop="endTime" label="打烊时间" width="100"></el-table-column>
         <el-table-column label="操作" width="200">
-          <template scope="scope">
+          <template slot-scope="scope">
             <el-button type="primary" size="small" @click="factory_edit(scope.$index, scope.row)" >修改</el-button>
             <el-button type="danger" size="small" @click="factory_delete(scope.$index, scope.row)"  >暂停营业</el-button>
           </template>

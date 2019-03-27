@@ -16,6 +16,8 @@
         </el-select>
         <el-input v-model="select_word" placeholder="筛选关键词" class="handle-input mr10"></el-input>
         <el-button type="primary" icon="search" @click="search">搜索</el-button>
+        <el-button type="plain" icon="search" @click="clear">清除</el-button>
+        <el-button type="plain" icon="search" @click="getData">刷新</el-button>
       </div>
       <el-table :data="deliverData" ref="filterTable" border class="table" fit>
         <el-table-column prop="deliverID" label="ID" width="150"></el-table-column>
@@ -108,8 +110,8 @@ export default {
         // ];
       this.$axios
         .post(this.urlInit, {
-          // shopID: sessionStorage.getItem("shopID")
-          shopID: '1'
+          shopID: sessionStorage.getItem("shopID")
+          // shopID: '1'
         })
         .then(res => {
           console.log(this.orderData);
@@ -186,6 +188,11 @@ export default {
           }
         });
       console.log("del:", row.deliverName);
+    },
+    clear() {
+      this.select_cate = "";
+      this.select_word = "";
+      this.getData();
     }
   }
 };

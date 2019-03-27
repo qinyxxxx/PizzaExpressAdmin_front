@@ -53,14 +53,14 @@
 
       <el-table :data="warehouseData" border class="table"><!--@selection-change="selsChange"-->
         <!--<el-table-column type="selection" width="150"></el-table-column>-->
-        <el-table-column prop="formulaId" label="ID" width="300"></el-table-column>
-        <el-table-column prop="formulaName" label="原料名称" sortable width="300"></el-table-column>
+        <el-table-column prop="formulaId" label="ID" sortable width="300"></el-table-column>
+        <el-table-column prop="formulaName" label="原料名称" width="300"></el-table-column>
         <!--<el-table-column prop="material_factory" label="进货厂商" width="250"></el-table-column>-->
         <!--<el-table-column prop="purchaseTime" label="生产日期" width="150"></el-table-column>-->
         <!--<el-table-column prop="material_note" label="备注" width="250"></el-table-column>-->
         <el-table-column prop="formulaCount" label="剩余数量" width="300"></el-table-column>
         <el-table-column label="操作" width="220">
-          <template scope="scope">
+          <template slot-scope="scope">
             <el-button  size="small" @click="material_check(scope.$index,scope.row)" >查看</el-button>
             <el-button type="primary" size="small" @click="stock(scope.$index, scope.row)" >进货</el-button>
             <!--<el-button type="danger" size="small" >停用</el-button>-->

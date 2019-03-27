@@ -481,12 +481,12 @@ export default {
     handleAvatarSuccess(res, file) {
       // this.imageUrl = URL.createObjectURL(file.raw);
       this.editObj.picURL =
-        "https://oss.cyzone.cn/2014/0617/20140617021745301.jpg";
+        "https://tse4.mm.bing.net/th?id=OIP.gdbTlUtZuBW0tunKDj4BXgAAAA&pid=Api";
     },
     handleAvatarSuccessAdd(res, file) {
       // this.imageUrl = URL.createObjectURL(file.raw);
       this.addObj.picURL =
-        "https://oss.cyzone.cn/2014/0617/20140617021745301.jpg";
+        "https://tse4.mm.bing.net/th?id=OIP.gdbTlUtZuBW0tunKDj4BXgAAAA&pid=Api";
     },
     beforeAvatarUpload(file) {
       const isIMG =
