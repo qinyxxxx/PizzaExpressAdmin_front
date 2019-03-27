@@ -27,6 +27,12 @@ export default new Router({
               },
                 {
                     path: '/warehouse_material',
+                    // component: resolve => require(['../components/page/warehouse_material.vue'], resolve),
+                    // meta: { title: '原料库存信息' },
+                    // path: '/warehouse',
+                    // name: 'Warehouse',
+                    // component: resolve => require(['../components/page/warehouse.vue'], resolve),
+                    // meta: { title: '库存情况' }
                     component: resolve => require(['../components/page/warehouse/warehouse_material.vue'], resolve),
                     meta: { title: '原料库存信息' }
                 },
@@ -35,31 +41,31 @@ export default new Router({
                 component: resolve => require(['../components/page/warehouse/warehouse_product.vue'], resolve),
                 meta: { title: '成品库存信息' }
               },
-              {
-                path: '/warehouse_emergency',
-                component: resolve => require(['../components/page/warehouse_emergency.vue'], resolve),
-                meta: { title: '库存紧急事件' }
-              },
+              // {
+              //   path: '/warehouse_emergency',
+              //   component: resolve => require(['../components/page/warehouse_emergency.vue'], resolve),
+              //   meta: { title: '库存紧急事件' }
+              // },
                 {
                     path: '/echarts',
                     component: resolve => require(['../components/page/echarts.vue'], resolve),
                     meta: { title: '系统首页' }
                 },
-                {
-                    path: '/warehouse_material',
-                    component: resolve => require(['../components/page/warehouse_material.vue'], resolve),
-                    meta: { title: '原料库存信息' },
-                },
-                {
-                    path: '/warehouse_product',
-                    component: resolve => require(['../components/page/warehouse_product.vue'], resolve),
-                    meta: { title: '成品库存信息' }
-                },
-                {
-                    path: '/warehouse_emergency',
-                    component: resolve => require(['../components/page/warehouse_emergency.vue'], resolve),
-                    meta: { title: '库存紧急事件' }
-                },
+                // {
+                //     path: '/warehouse_material',
+                //     component: resolve => require(['../components/page/warehouse_material.vue'], resolve),
+                //     meta: { title: '原料库存信息' },
+                // },
+                // {
+                //     path: '/warehouse_product',
+                //     component: resolve => require(['../components/page/warehouse_product.vue'], resolve),
+                //     meta: { title: '成品库存信息' }
+                // },
+                // {
+                //     path: '/warehouse_emergency',
+                //     component: resolve => require(['../components/page/warehouse_emergency.vue'], resolve),
+                //     meta: { title: '库存紧急事件' }
+                // },
                 {
                     path: '/order',
                     name: 'Order',

@@ -102,7 +102,7 @@ export default {
       //   .catch(function(err) {
       //     console.log(err);
       //   });
-      this.$router.push("/echarts");
+      //this.$router.push("/echarts");
       this.$axios
         .get(this.url, {
           params: {
@@ -131,7 +131,7 @@ export default {
             });
             setTimeout(() => {
               console.log(this.radio)
-              if (this.radio == "1") this.$router.push("/dashboard");
+              if (this.radio == "1") this.$router.push("/echarts");
               //跳转到工厂管理员
               else this.$router.push("/dashboard2");
               //跳转到系统管理员
