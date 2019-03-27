@@ -7,21 +7,6 @@
       </el-breadcrumb>
     </div>
 
-    <!--&lt;!&ndash;工具条&ndash;&gt;-->
-    <!--<el-col :span="24" class="toolbar" style="padding-bottom: 0px;">-->
-      <!--<el-form :inline="true" :model="filters">-->
-        <!--<el-form-item>-->
-          <!--<el-input v-model="filters.name" placeholder=""></el-input>-->
-        <!--</el-form-item>-->
-        <!--<el-form-item>-->
-          <!--<el-button type="primary" v-on:click="getUsers">查询</el-button>-->
-        <!--</el-form-item>-->
-        <!--<el-form-item>-->
-          <!--<el-button type="primary" @click="handleAdd">新增</el-button>-->
-        <!--</el-form-item>-->
-      <!--</el-form>-->
-    <!--</el-col>-->
-
     <div class="container" >
 
       <!--<el-col :span="24" class="toolbar" style="padding-bottom: 0px">-->
@@ -40,13 +25,14 @@
 
       <div >
         <!-- <el-button type="primary" icon="delete" class="handle-del mr10" @click="delAll">批量删除</el-button> -->
-        <el-select v-model="select_cate" filterable placeholder="筛选条件" class="handle-select mr10">
-          <el-option key="1" label="原料名称" value="原料名称"></el-option>
-        </el-select>
-        <el-input v-model="select_word" placeholder="筛选关键词" class="handle-input mr10" >
+        <!--<el-select v-model="select_cate" filterable placeholder="筛选条件" class="handle-select mr10">-->
+          <!--<el-option key="1" label="原料名称" value="原料名称"></el-option>-->
+        <!--</el-select>-->
+        <el-input v-model="select_word" placeholder="请输入原料名称" class="handle-input mr10" >
         </el-input>
 
         <el-button type="primary" icon="search" @click="search">搜索</el-button>
+        <el-button type="plain" icon="search" @click="clear">清除</el-button>
         <!--<el-button type="primary" @click="handleAdd">新增</el-button>-->
         <br/><br/>
       </div>
@@ -144,14 +130,16 @@
         ElCollapse},
       data(){
             return {
+              url_search_byname:"/pizzaexpress/shop/getformulbyname",//搜索
               url_material_quantity: "/pizzaexpress/shop/getallformulabyshop", //返回这个工厂的原料信息
               url_material_check_Form: "/pizzaexpress/purchase/getpurchasebyformula", //返回这个工厂的某个原料的进货历史信息
               url_add_Form: "/pizzaexpress/purchase/addpurchaseformula", //保存进货信息
 
+
               filters: {
                 name: ''
               },
-              select_cate: '',
+              //select_cate: '',
               select_word: '',
               //select_date: '',
               warehouseData: [//原料信息
@@ -279,6 +267,24 @@
                 this.warehouseData = warehouseData;
               });
           },
+
+          search(){
+            this.$axios
+              .post(this.url_search_byname, {
+                //shopID: sessionStorage.getItem("shopID")
+                shopID:'1', //因为没有login
+                formulaName:this.select_word
+              })
+              .then(res => {
+                let warehouseData = res.data.purchaseData.data;
+                this.warehouseData = warehouseData;
+              });
+          },
+          clear() {
+            this.select_word = "";
+            this.getData();
+          },
+
 
 
           stock(index,row) {
