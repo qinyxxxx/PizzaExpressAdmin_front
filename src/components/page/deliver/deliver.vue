@@ -41,7 +41,6 @@
         <el-table-column label="操作" width="250" align="center">
           <template slot-scope="scope">
             <el-button v-if="scope.row.deliverStatus=='配送中'" type="text" icon="el-icon-view" @click="openDetails(scope.row)">查看配送信息</el-button>
-            <!-- <el-button type="text" icon="el-icon-close" @click="delDeliver(scope.row)">解雇</el-button> -->
           </template>
         </el-table-column>
       </el-table>
@@ -79,8 +78,8 @@ export default {
     this.getData();
   },
   methods: {
-    handleCurrentChange(val) {
-      this.cur_page = val;
+    handleCurrentChange() {
+      // this.cur_page = val;
       this.getData();
     },
 
@@ -114,15 +113,8 @@ export default {
           // shopID: '1'
         })
         .then(res => {
-          console.log(this.orderData);
           let deliverData = res.data.deliverData.data;
           this.deliverData = deliverData;
-          let status = res.data.status; //状态码
-          if (status == 200) {
-            console.log(this.orderData);
-          } else {
-            console.log(this.orderData);
-          }
         });
     },
     filterStatus(value, row) {
@@ -148,13 +140,13 @@ export default {
         .then(res => {
           let deliverData = res.data.deliverData.data;
           this.deliverData = deliverData;
-          let status = res.data.status; //状态码
-          if (status == 200) {
-            console.log(this.deliver);
-            console.log(sessionStorage.getItem("shopID"));
-          } else {
-            console.log(status);
-          }
+          // let status = res.data.status; //状态码
+          // if (status == 200) {
+          //   console.log(this.deliver);
+          //   console.log(sessionStorage.getItem("shopID"));
+          // } else {
+          //   console.log(status);
+          // }
         });
     },
     openDetails(row) {
@@ -164,30 +156,9 @@ export default {
           detail: row
         }
       });
-      console.log("row:", row.deliverID);
     },
     formatter(row, column) {
       return row.deliverName;
-    },
-    delDeliver(row) {
-      this.$axios
-        .post(this.url, {
-          deliverID: this.deliverID,
-          deliverName: this.deliverName,
-          shopID: sessionStorage.getItem("shopID")
-        })
-        .then(res => {
-          let deliverData = res.data.deliverData.data;
-          this.deliverData = deliverData;
-          let status = res.data.status; //状态码
-          if (status == 200) {
-            console.log(this.deliver);
-            console.log(sessionStorage.getItem("shopID"));
-          } else {
-            console.log(status);
-          }
-        });
-      console.log("del:", row.deliverName);
     },
     clear() {
       this.select_cate = "";

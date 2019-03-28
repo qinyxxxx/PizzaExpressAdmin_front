@@ -35,31 +35,11 @@ export default new Router({
                 component: resolve => require(['../components/page/warehouse/warehouse_product.vue'], resolve),
                 meta: { title: '成品库存信息' }
               },
-              // {
-              //   path: '/warehouse_emergency',
-              //   component: resolve => require(['../components/page/warehouse_emergency.vue'], resolve),
-              //   meta: { title: '库存紧急事件' }
-              // },
                 {
                     path: '/echarts',
                     component: resolve => require(['../components/page/echarts.vue'], resolve),
                     meta: { title: '系统首页' }
                 },
-                // {
-                //     path: '/warehouse_material',
-                //     component: resolve => require(['../components/page/warehouse_material.vue'], resolve),
-                //     meta: { title: '原料库存信息' },
-                // },
-                // {
-                //     path: '/warehouse_product',
-                //     component: resolve => require(['../components/page/warehouse_product.vue'], resolve),
-                //     meta: { title: '成品库存信息' }
-                // },
-                // {
-                //     path: '/warehouse_emergency',
-                //     component: resolve => require(['../components/page/warehouse_emergency.vue'], resolve),
-                //     meta: { title: '库存紧急事件' }
-                // },
                 {
                     path: '/order',
                     name: 'Order',
@@ -72,40 +52,10 @@ export default new Router({
                     meta: { title: '消息处理' }
                 },
                 {
-                    path: '/form',
-                    component: resolve => require(['../components/page/BaseForm.vue'], resolve),
-                    meta: { title: '基本表单' }
-                },
-                {
-                    // 图片上传组件
-                    path: '/upload',
-                    component: resolve => require(['../components/page/Upload.vue'], resolve),
-                    meta: { title: '文件上传' }
-                },
-                {
-                    // vue-schart组件
                     path: '/deliver',
                     name: 'Deliver',
                     component: resolve => require(['../components/page/deliver/deliver.vue'], resolve),
                     meta: { title: '配送员情况' }
-                },
-                {
-                    // 拖拽列表组件
-                    path: '/drag',
-                    component: resolve => require(['../components/page/DragList.vue'], resolve),
-                    meta: { title: '拖拽列表' }
-                },
-                {
-                    // 拖拽Dialog组件
-                    path: '/dialog',
-                    component: resolve => require(['../components/page/DragDialog.vue'], resolve),
-                    meta: { title: '拖拽弹框' }
-                },
-                {
-                    // 权限页面
-                    path: '/permission',
-                    component: resolve => require(['../components/page/Permission.vue'], resolve),
-                    meta: { title: '权限测试', permission: true }
                 },
                 {
                     path: '/404',
@@ -176,18 +126,6 @@ export default new Router({
                     name: 'User',
                     component: resolve => require(['../components/page/user/user.vue'], resolve),
                     meta: { title: '用户管理' }
-                },
-                {
-                    path: '/superOrder',
-                    name: 'SuperOrder',
-                    component: resolve => require(['../components/page/order/superOrder.vue'], resolve),
-                    meta: { title: '订单管理' }
-                },
-                {
-                    path: '/superOrderDetail',
-                    name: 'SuperOrderDetail',
-                    component: resolve => require(['../components/page/order/superOrderDetail.vue'], resolve),
-                    meta: { title: '系统订单详情' }
                 },
             ]
         },
