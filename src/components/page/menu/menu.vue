@@ -309,34 +309,6 @@ export default {
       //       price9: "99",
       //       price12: "122"
       //     },
-      //     {
-      //       pizzaID: "1",
-      //       pizzaName: "夏威夷芝心披萨",
-      //       description: "好吃",
-      //       pizzaStatus: "下架",
-      //       flour: 2,
-      //       egg: 1,
-      //       cheese: 4,
-      //       vegetable: 2,
-      //       meat: 3,
-      //       price9: "99",
-      //       picURL: "",
-      //       price12: "122"
-      //     },
-      //     {
-      //       pizzaID: "1",
-      //       pizzaName: "夏威夷芝心披萨",
-      //       description: "好吃",
-      //       flour: 2,
-      //       egg: 1,
-      //       cheese: 4,
-      //       vegetable: 2,
-      //       meat: 3,
-      //       pizzaStatus: "下架",
-      //       price9: "99",
-      //       picURL: "",
-      //       price12: "122"
-      //     }
       //   ];
       // }
     },

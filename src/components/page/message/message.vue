@@ -63,7 +63,7 @@
               </el-col>
               <el-col :span="8">
                 <el-form-item label="进货数量" prop="purchaseCount">
-                  <el-input-number v-model="add_Form.purchaseCount" :min="0" :max="1000"></el-input-number>
+                  <el-input-number v-model="add_Form.purchaseCount" :min="0" :max="1000" step="100"></el-input-number>
                 </el-form-item>
               </el-col>
             </el-row>
@@ -150,13 +150,6 @@ export default {
           time: "2018-04-19 20:00:00",
           content: "白菜需要进货啦！"
         },
-        {
-          //ID:2,
-          noticeID: "",
-          title: "",
-          time: "2018-04-19 21:00:00",
-          content: "猪肉需要进货啦！"
-        }
       ],
       readed: [
         {
@@ -164,12 +157,6 @@ export default {
           content: "火腿需要进货啦！"
         }
       ],
-      // trash: [
-      //   {
-      //     date: "2018-04-19 20:00:00",
-      //     title: "大蒜需要进货啦！"
-      //   }
-      // ]
       add_FormVisible: false,
       add_Form: {
         noticeID: "",
@@ -187,7 +174,6 @@ export default {
       this.$axios
         .post(this.url_unread, {
           shopID: sessionStorage.getItem("shopID")
-          // shopID: "1" //因为没有login
         })
         .then(res => {
           this.unread = res.data.unreadNoticeData.data;
@@ -196,7 +182,6 @@ export default {
       this.$axios
         .post(this.url_readed, {
           shopID: sessionStorage.getItem("shopID")
-          // shopID: "1" //因为没有login
         })
         .then(res => {
           let readed = res.data.readNoticeData.data;

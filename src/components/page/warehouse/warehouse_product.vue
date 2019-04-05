@@ -93,7 +93,7 @@ export default {
           itemName: "美国风情土豆培根比萨",
           size: "1",
           count: 10,
-          price: "2019-3-6",
+          price: "2019-3-6"
         }
       ],
       add_product_form: {
@@ -137,7 +137,7 @@ export default {
         })
         .then(res => {
           let warehouseData = res.data.itemData.data;
-          if (warehouseData.length==0) {
+          if (warehouseData.length == 0) {
             this.$message({
               message: "未找到含有'" + this.select_word + "'的记录",
               type: "info"
@@ -164,13 +164,20 @@ export default {
                 count: this.add_product_form.count
               })
               .then(res => {
-                this.$message({
-                  message: "提交成功",
-                  type: "success"
-                });
-                this.$refs["add_product_form"].resetFields();
-                this.add_product_Visible = false;
-                this.getData();
+                let status = res.data.status;
+                if (status == "原料不足") {
+                  this.$message.error("抱歉，超出剩余原料库存，请先对进货原料。");
+                } else if (status == "500") {
+                  this.$message.error("新增失败。");
+                } else {
+                  this.$message({
+                    message: "提交成功",
+                    type: "success"
+                  });
+                  this.$refs["add_product_form"].resetFields();
+                  this.add_product_Visible = false;
+                  this.getData();
+                }
               });
           });
         }
