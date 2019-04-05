@@ -23,22 +23,19 @@
         </el-col>
         <el-col :span="14" class="deliver-info">
           <el-card shadow="never">
-          编号：{{this.$route.params.detail.deliverID}}
+          编号：{{this.$route.query.deliverID}}
           <br/><br/>
-          姓名：{{this.$route.params.detail.deliverName}}
+          姓名：{{this.$route.query.deliverName}}
           <br/><br/>
-          电话：{{this.$route.params.detail.phone}}
+          电话：{{this.$route.query.phone}}
           <br/><br/>
-          所属工厂：{{this.$route.params.detail.shopID}}
+          所属工厂：{{this.$route.query.shopID}}
           <br/><br/>
-          当前状态：{{this.$route.params.detail.deliverStatus}}
+          当前状态：{{this.$route.query.deliverStatus}}
           </el-card>
         </el-col>
       </el-row>
     </div>
-      <div class="toolbar">
-        <button @click="getMap()">get map</button>
-      </div>
   </div>
 </template>
 

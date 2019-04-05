@@ -55,7 +55,7 @@
         computed:{
             username(){
                 let account = sessionStorage.getItem('account');
-                return account ? account : this.name;
+                return account ? '系统管理员' : this.name;
             },
             shopid(){
                 let shopID = sessionStorage.getItem('shopID');

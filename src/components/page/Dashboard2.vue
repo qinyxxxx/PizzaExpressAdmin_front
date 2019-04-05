@@ -6,7 +6,7 @@
           <div class="user-info">
             <img src="../../assets/img/img.jpg" class="user-avator" alt="">
             <div class="user-info-cont">
-              <div style="padding-bottom: 5px">用户：{{name}}</div>
+              <div style="padding-bottom: 5px">管理员编号：{{name}}</div>
               <div>身份：{{role}}</div>
             </div>
           </div>
@@ -38,7 +38,7 @@
               <div class="grid-content grid-con-1">
                 <i class="el-icon-pizza-yonghu1 grid-con-icon"></i>
                 <div class="grid-cont-right">
-                  <div class="grid-num">1234</div>
+                  <div class="grid-num">34</div>
                   <div>用户访问量</div>
                 </div>
               </div>
@@ -49,7 +49,7 @@
               <div class="grid-content grid-con-2">
                 <i class="el-icon-pizza-tongzhi1 grid-con-icon"></i>
                 <div class="grid-cont-right">
-                  <div class="grid-num">321</div>
+                  <div class="grid-num">0</div>
                   <div>系统消息</div>
                 </div>
               </div>
@@ -60,7 +60,7 @@
               <div class="grid-content grid-con-3">
                 <i class="el-icon-pizza-caiwubaobiao grid-con-icon"></i>
                 <div class="grid-cont-right">
-                  <div class="grid-num">5000</div>
+                  <div class="grid-num">657</div>
                   <div>今日销售披萨数量</div>
                 </div>
               </div>
@@ -102,8 +102,8 @@
       return {
         chartColumn: null,
         chartBar: null,
-        name:"three",
-        role:"系统管理员",
+        name: sessionStorage.getItem("account"),
+        role: "系统管理员",
         // factory_info:[{
         //   factory_name:"华东师范大学店",
         //   factory_id:123456,

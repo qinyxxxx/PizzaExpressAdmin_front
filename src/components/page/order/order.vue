@@ -29,21 +29,27 @@
           :clearable="false"
         ></el-date-picker>
         <el-button type="primary" icon="search" @click="search">搜索</el-button>
-        <el-button type="plain" icon="search" @click="clear">清除</el-button>
-        <el-button type="plain" icon="search" @click="getData">刷新</el-button>
+        <el-button type="plain" icon="search" @click="clear">清除/刷新</el-button>
+        <!-- <el-button type="plain" icon="search" @click="getData">刷新</el-button> -->
         <br>
       </div>
-      <el-table :data="orderData" ref="filterTable" border class="table" fit>
+      <el-table
+        :data="orderData.slice((cur_page-1)*10,cur_page*10)"
+        ref="filterTable"
+        border
+        class="table"
+        fit
+      >
         <el-table-column type="expand">
           <template slot-scope="props">
             <el-form label-position="left" class="demo-table-expand">
               <el-form-item label="订单编号：">
                 <span>{{ props.row.orderID }}</span>
               </el-form-item>
-              <el-form-item label="用户：">
+              <el-form-item label="用户编号：">
                 <span>{{ props.row.user }}</span>
               </el-form-item>
-              <el-form-item label="配送员：">
+              <el-form-item label="配送员编号：">
                 <span>{{ props.row.deliver }}</span>
               </el-form-item>
               <el-form-item label="送餐地址：">
@@ -66,13 +72,13 @@
         </el-table-column>
         <el-table-column prop="orderID" label="ID" width="200"></el-table-column>
         <el-table-column prop="startDate" label="下单时间" sortable :formatter="formatter"></el-table-column>
-        <el-table-column prop="user" label="用户" width="120"></el-table-column>
-        <el-table-column prop="deliver" label="配送员" width="120"></el-table-column>
+        <el-table-column prop="user" label="用户编号" width="120"></el-table-column>
+        <el-table-column prop="deliver" label="配送员编号" width="120"></el-table-column>
         <el-table-column
           prop="orderStatus"
           label="配送状态"
           width="120"
-          :filters="[{ text: '未接单', value: '未接单' },{ text: '已送达', value: '已送达' }, { text: '正在配送', value: '正在配送' }]"
+          :filters="[{ text: '已送达', value: '已送达' }, { text: '正在配送', value: '正在配送' }]"
           :filter-method="filterStatus"
           filter-placement="bottom-end"
         >
@@ -100,14 +106,15 @@
           @current-change="handleCurrentChange"
           layout="prev, pager, next"
           :total="total"
+          :current-page="cur_page"
         ></el-pagination>
-        <el-button type="primary" icon="search" @click="goTo">走着看看</el-button>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import { constants } from "fs";
 export default {
   name: "order",
   data() {
@@ -116,7 +123,7 @@ export default {
       urlInit: "/pizzaexpress/order/getlasttwentyorders",
       orderData: [],
       cur_page: 1,
-      total: 20,
+      total: 10,
       select_cate: "",
       select_word: "",
       select_date: [],
@@ -168,17 +175,11 @@ export default {
       this.$axios
         .post(this.urlInit, {
           shopID: sessionStorage.getItem("shopID")
-          // shopID: "1"
         })
         .then(res => {
           let orderData = res.data.orderData.data;
           this.orderData = orderData;
-          let status = res.data.status; //状态码
-          if (status == 200) {
-            console.log(this.orderData);
-          } else {
-            console.log(status);
-          }
+          this.total = orderData.length;
         });
       // this.orderData = [
       //   {
@@ -190,24 +191,6 @@ export default {
       //     orderStatus: "配送完成",
       //     orderAmount: "100.0"
       //   },
-      //   {
-      //     orderid: "2",
-      //     date: "2019-02-25 12:01:00",
-      //     user: "沈庭杉",
-      //     deliver: "陈信宏",
-      //     orderInfo: "帕帕罗尼披萨",
-      //     orderStatus: "正在配送",
-      //     orderAmount: "120.0"
-      //   },
-      //   {
-      //     orderid: "2",
-      //     date: "2019-01-05 12:01:00",
-      //     user: "秦妤欣",
-      //     deliver: "小飞象",
-      //     orderInfo: "不管什么披萨",
-      //     orderStatus: "正在配送",
-      //     orderAmount: "150.0"
-      //   }
       // ];
     },
     filterStatus(value, row) {
@@ -225,34 +208,28 @@ export default {
           break;
       }
 
-      // console.log("orderid:", this.orderID);
-      // console.log("deliverid:", this.deliverID);
-      // console.log("select_date:", this.select_date);
-      // console.log("shopid:", sessionStorage.getItem("shopID"));
       if (!this.select_date[0] || !this.select_date[1]) {
-        console.log("date为空");
         this.$axios
           .post(this.urlSelect, {
             orderID: this.orderID,
             deliverID: this.deliverID,
             startTime: "-1",
             endTime: "-1",
-            // shopID: sessionStorage.getItem("shopID")
-            shopID: "1"
+            shopID: sessionStorage.getItem("shopID")
           })
           .then(res => {
             let orderData = res.data.orderData.data;
-            this.orderData = orderData;
-            let status = res.data.status; //状态码
-            if (status == 200) {
-              console.log(this.orderData);
-              console.log(sessionStorage.getItem("shopID"));
+            if (orderData.length == 0) {
+              this.$message({
+                message: "抱歉，未找到记录",
+                type: "info"
+              });
             } else {
-              console.log(status);
+              this.orderData = orderData;
+              this.total = orderData.length;
             }
           });
       } else {
-        console.log("date不为空");
         this.$axios
           .post(this.urlSelect, {
             orderID: this.orderID,
@@ -260,17 +237,17 @@ export default {
             startTime: this.select_date[0],
             endTime: this.select_date[1],
             shopID: sessionStorage.getItem("shopID")
-            // shopID: "1"
           })
           .then(res => {
             let orderData = res.data.orderData.data;
-            this.orderData = orderData;
-            let status = res.data.status; //状态码
-            if (status == 200) {
-              console.log(this.orderData);
-              console.log(sessionStorage.getItem("shopID"));
+            if (orderData.length == 0) {
+              this.$message({
+                message: "抱歉，未找到记录",
+                type: "info"
+              });
             } else {
-              console.log(status);
+              this.orderData = orderData;
+              this.total = orderData.length;
             }
           });
       }
@@ -304,18 +281,6 @@ export default {
             orderAddress: row.orderAddress
           }
         });
-      // this.$router.push({
-      //   name: "OrderDetail",
-      //   query: {
-      //     // detail: row
-      //     orderid: row.orderid,
-      //     date: row.date,
-      //     orderInfo: row.orderInfo,
-      //     deliver: row.deliver,
-      //     user: row.user
-      //   }
-      // });
-      console.log("row:", row);
     },
     goTo() {
       this.$router.push("/dashboard2");

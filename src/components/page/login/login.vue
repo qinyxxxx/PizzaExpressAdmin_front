@@ -89,7 +89,7 @@ export default {
             });
             setTimeout(() => {
               console.log(this.radio);
-              if (this.radio == "1") this.$router.push("/echarts");
+              if (this.radio == "1") this.$router.push("/Dashboard");
               //跳转到工厂管理员
               else this.$router.push("/dashboard2");
               //跳转到系统管理员

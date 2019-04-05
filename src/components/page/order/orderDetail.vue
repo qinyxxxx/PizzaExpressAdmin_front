@@ -22,23 +22,20 @@
           ></el-amap>
         </el-col>
         <el-col :span="14" class="order-info">
-          订单编号： {{this.$route.query.orderid}}
+          订单编号： {{this.$route.query.orderID}}
           <br/><br/>
-          订单时间：{{this.$route.query.date}}
+          下单时间：{{this.$route.query.startDate}}
+          <!-- <br/><br/>
+          预计完成时间：{{this.$route.query.date}} -->
           <br/><br/>
-          预计完成时间：{{this.$route.query.date}}
+          用户编号：{{this.$route.query.user}}
           <br/><br/>
-          用户：{{this.$route.query.user}}
-          <br/><br/>
-          配送员：{{this.$route.query.deliver}}
+          配送员编号：{{this.$route.query.deliver}}
           <br/><br/>
           订单内容：{{this.$route.query.orderInfo}}
         </el-col>
       </el-row>
     </div>
-      <div class="toolbar">
-        <button @click="getMap()">get map</button>
-      </div>
   </div>
 </template>
 

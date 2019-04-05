@@ -27,11 +27,12 @@
       </el-row>
       <br>
       <el-row>
-        <div id="pizzaChart" style="width:100%; height:500px"></div>
-      </el-row>
-      <br>
-      <el-row>
-        <div id="pizzaShopChart" style="width:100%; height:500px"></div>
+        <el-col :span="12">
+          <div id="pizzaChart" style="width:100%; height:500px"></div>
+        </el-col>
+        <el-col :span="12">
+          <div id="pizzaShopChart" style="width:100%; height:500px"></div>
+        </el-col>
       </el-row>
     </div>
   </div>
@@ -137,9 +138,9 @@ export default {
             name: "今日销量",
             type: "bar",
             data: [10, 20, 36, 10, 10, 20, 5, 40],
-            itemStyle:{
-              normal:{
-                color: '#106EDD'
+            itemStyle: {
+              normal: {
+                color: "#106EDD"
               }
             }
           }

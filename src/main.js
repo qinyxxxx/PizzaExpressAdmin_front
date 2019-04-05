@@ -8,10 +8,8 @@ import { lazyAMapApiLoaderInstance } from 'vue-amap';
 import axios from 'axios';
 // import http from './utils/request'
 
-// import '../static/css/theme-green/index.css';       // 浅绿色主题
 import './assets/css/icon.css';
 import './assets/icon/iconfont.css';
-// import 'iview/dist/styles/iview.css';
 import './components/common/directives';
 import "babel-polyfill";
 
@@ -20,7 +18,8 @@ Vue.use(ElementUI, {
     size: 'small'
 });
 Vue.prototype.$axios = axios.create({
-    baseURL: "http://172.30.229.132:8080",
+    // baseURL: "http://172.30.229.132:8080",
+    baseURL: "http://localhost:8080",
 });
 
 Vue.use(VueAMap);

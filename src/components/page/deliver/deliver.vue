@@ -16,10 +16,16 @@
         </el-select>
         <el-input v-model="select_word" placeholder="筛选关键词" class="handle-input mr10"></el-input>
         <el-button type="primary" icon="search" @click="search">搜索</el-button>
-        <el-button type="plain" icon="search" @click="clear">清除</el-button>
-        <el-button type="plain" icon="search" @click="getData">刷新</el-button>
+        <el-button type="plain" icon="search" @click="clear">清除/刷新</el-button>
+        <!-- <el-button type="plain" icon="search" @click="getData">刷新</el-button> -->
       </div>
-      <el-table :data="deliverData" ref="filterTable" border class="table" fit>
+      <el-table
+        :data="deliverData.slice((cur_page-1)*10,cur_page*10)"
+        ref="filterTable"
+        border
+        class="table"
+        fit
+      >
         <el-table-column prop="deliverID" label="ID" width="150"></el-table-column>
         <el-table-column prop="deliverName" label="姓名" :formatter="formatter"></el-table-column>
         <el-table-column prop="phone" label="电话" width="250"></el-table-column>
@@ -40,7 +46,12 @@
         </el-table-column>
         <el-table-column label="操作" width="250" align="center">
           <template slot-scope="scope">
-            <el-button v-if="scope.row.deliverStatus=='配送中'" type="text" icon="el-icon-view" @click="openDetails(scope.row)">查看配送信息</el-button>
+            <el-button
+              v-if="scope.row.deliverStatus=='配送中'"
+              type="text"
+              icon="el-icon-view"
+              @click="openDetails(scope.row)"
+            >查看配送信息</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -50,6 +61,7 @@
           @current-change="handleCurrentChange"
           layout="prev, pager, next"
           :total="total"
+          :current-page="cur_page"
         ></el-pagination>
       </div>
     </div>
@@ -66,7 +78,7 @@ export default {
       urlDel: "/pizzaexpress/deliver/deldeliver",
       deliverData: [],
       cur_page: 1,
-      total: 20,
+      total: 10,
       select_cate: "",
       select_word: "",
       deliverID: "-1",
@@ -78,43 +90,43 @@ export default {
     this.getData();
   },
   methods: {
-    handleCurrentChange() {
-      // this.cur_page = val;
+    handleCurrentChange(val) {
+      this.cur_page = val;
       this.getData();
     },
 
     getData() {
-        //   this.deliverData = [
-        //   {
-        //     deliverID: "1",
-        //     deliverName: "吴青峰",
-        //     phone: "13816666666",
-        //     shopID: "天下第一店",
-        //     deliverStatus: "空闲"
-        //   },
-        //   {
-        //     deliverID: "2",
-        //     deliverName: "陈信宏",
-        //     phone: "13816666667",
-        //     shopID: "天下第一店",
-        //     deliverStatus: "配送中"
-        //   },
-        //   {
-        //     deliverID: "3",
-        //     deliverName: "小飞象",
-        //     phone: "13816666668",
-        //     shopID: "天下第一店",
-        //     deliverStatus: "配送中"
-        //   }
-        // ];
+      //   this.deliverData = [
+      //   {
+      //     deliverID: "1",
+      //     deliverName: "吴青峰",
+      //     phone: "13816666666",
+      //     shopID: "天下第一店",
+      //     deliverStatus: "空闲"
+      //   },
+      //   {
+      //     deliverID: "2",
+      //     deliverName: "陈信宏",
+      //     phone: "13816666667",
+      //     shopID: "天下第一店",
+      //     deliverStatus: "配送中"
+      //   },
+      //   {
+      //     deliverID: "3",
+      //     deliverName: "小飞象",
+      //     phone: "13816666668",
+      //     shopID: "天下第一店",
+      //     deliverStatus: "配送中"
+      //   }
+      // ];
       this.$axios
         .post(this.urlInit, {
           shopID: sessionStorage.getItem("shopID")
-          // shopID: '1'
         })
         .then(res => {
           let deliverData = res.data.deliverData.data;
           this.deliverData = deliverData;
+          this.total = deliverData.length;
         });
     },
     filterStatus(value, row) {
@@ -139,21 +151,26 @@ export default {
         })
         .then(res => {
           let deliverData = res.data.deliverData.data;
-          this.deliverData = deliverData;
-          // let status = res.data.status; //状态码
-          // if (status == 200) {
-          //   console.log(this.deliver);
-          //   console.log(sessionStorage.getItem("shopID"));
-          // } else {
-          //   console.log(status);
-          // }
+          if (deliverData.length == 0) {
+            this.$message({
+              message: "未找到含有'" + this.select_word + "'的记录",
+              type: "info"
+            });
+          } else {
+            this.deliverData = deliverData;
+            this.total = deliverData.length;
+          }
         });
     },
     openDetails(row) {
       this.$router.push({
-        name: "deliverDetail",
-        params: {
-          detail: row
+        name: "DeliverDetail",
+        query: {
+          deliverID: row.deliverID,
+          deliverName: row.deliverName,
+          phone: row.phone,
+          shopID: sessionStorage.getItem("shopID"),
+          deliverStatus: row.deliverStatus
         }
       });
     },

@@ -12,8 +12,8 @@
       <div class="handle-box">
         <el-input v-model="selectWord" placeholder="用户ID" class="handle-input mr10"></el-input>
         <el-button type="primary" @click="search">搜索</el-button>
-        <el-button type="plain" @click="clear">清除</el-button>
-        <el-button type="plain" @click="getData">刷新</el-button>
+        <el-button type="plain" @click="clear">清除/刷新</el-button>
+        <!-- <el-button type="plain" @click="getData">刷新</el-button> -->
       </div>
       <el-table :data="userData" ref="filterTable" border class="table" fit>
         <el-table-column prop="userID" label="ID" width="100"></el-table-column>

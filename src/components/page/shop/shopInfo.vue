@@ -106,8 +106,6 @@
       </div>
     </el-dialog>
 
-
-
     <el-dialog title="修改" :visible.sync="edit_FormVisible" :close-on-click-modal="false">
       <el-form :model="edit_Form" label-width="80px"  ref="edit_Form">
         <el-row>
@@ -313,7 +311,9 @@
 
       factory_edit(index, row){
         this.edit_FormVisible=true;
-        this.edit_Form = Object.assign({}, row);
+        this.edit_Form = row;
+        // this.edit_Form = Object.assign({}, row);
+        console.log(this.edit_Form)
       },
       //编辑提交工厂信息
       editSubmit: function () {
