@@ -56,16 +56,21 @@
     </div>
 
     <el-dialog title="新增" :visible.sync="add_FormVisible" :close-on-click-modal="false">
-      <el-form :model="add_Form" label-width="80px" ref="add_Form">
+      <el-form :model="add_Form" label-width="80px" :rules="rules" ref="add_Form">
         <el-row>
-          <el-col :span="12">
-            <el-form-item label="工厂账号" prop="account">
+          <el-col :span="8">
+            <el-form-item label="管理账号" prop="account">
               <el-input v-model="add_Form.account"></el-input>
             </el-form-item>
           </el-col>
-          <el-col :span="12">
-            <el-form-item label="工厂密码" prop="password">
-              <el-input v-model="add_Form.password"></el-input>
+          <el-col :span="8">
+            <el-form-item label="密码" prop="password">
+              <el-input v-model="add_Form.password" type="password"></el-input>
+            </el-form-item>
+          </el-col>
+          <el-col :span="8">
+            <el-form-item label="确认密码" prop="password2">
+              <el-input v-model="add_Form.password2" type="password"></el-input>
             </el-form-item>
           </el-col>
         </el-row>
@@ -78,7 +83,7 @@
           </el-col>
           <el-col :span="12">
             <el-form-item label="电话号码" prop="shopPhone">
-              <el-input v-model="add_Form.phone"></el-input>
+              <el-input v-model.number="add_Form.shopPhone"></el-input>
             </el-form-item>
           </el-col>
         </el-row>
@@ -94,12 +99,12 @@
         <el-row>
           <el-col :span="12">
             <el-form-item label="营业时间" prop="startTime">
-              <el-time-picker v-model="add_Form.startTime" value-format="HH:mm" format="HH:mm"></el-time-picker>
+              <el-time-picker v-model="add_Form.shopStartTime" value-format="HH:mm" format="HH:mm"></el-time-picker>
             </el-form-item>
           </el-col>
           <el-col :span="12">
             <el-form-item label="打烊时间" prop="endTime">
-              <el-time-picker v-model="add_Form.endTime" value-format="HH:mm" format="HH:mm"></el-time-picker>
+              <el-time-picker v-model="add_Form.shopEndTime" value-format="HH:mm" format="HH:mm"></el-time-picker>
             </el-form-item>
           </el-col>
         </el-row>
@@ -121,7 +126,7 @@
           </el-col>
           <el-col :span="12">
             <el-form-item label="电话号码">
-              <el-input v-model="edit_Form.shopPhone"></el-input>
+              <el-input v-model.number="edit_Form.shopPhone"></el-input>
             </el-form-item>
           </el-col>
         </el-row>
@@ -192,14 +197,62 @@ export default {
       },
       add_FormVisible: false,
       add_Form: {
+        account: "",
+        password: "",
+        password2: "",
         shopName: "",
         shopPhone: "",
         shopSalesVolume: "",
         shopAddress: "",
         shopStartTime: "",
         shopEndTime: ""
+      },
+      rules: {
+        account: [
+          {
+            required: true,
+            message: "工厂管理账号不能为空",
+            trigger: "blur"
+          },
+          { min: 2, max: 20, message: "长度在 3 到 15 个字符", trigger: "blur" }
+        ],
+        password: [
+          { required: true, message: "密码不能为空", trigger: "blur" },
+          { min: 2, max: 20, message: "长度在 5 到 15 个字符", trigger: "blur" }
+        ],
+        password2: [
+          { required: true, message: "请再次确认密码", trigger: "blur" },
+          {
+            validator: (rule, value, callback) => {
+              if (value === "") {
+                callback(new Error("请再次输入密码"));
+              } else if (value !== this.add_Form.password) {
+                callback(new Error("两次输入密码不一致"));
+              } else {
+                callback();
+              }
+            },
+            trigger: "blur"
+          }
+        ],
+        shopName: [
+          { required: true, message: "名称不能为空", trigger: "blur" },
+          { min: 5, max: 10, message: "长度在 5 到 10 个字符", trigger: "blur" }
+        ],
+        shopPhone: [
+          { type: "number", message: "电话只能包含数字", trigger: "blur" }
+        ],
+        shopAddress: [
+          { required: true, message: "地址不能为空", trigger: "blur" },
+          { min: 6, max: 20, message: "长度在 6 到 20 个字符", trigger: "blur" }
+        ],
+        shopStartTime: [
+          { required: true, message: "营业时间不能为空", trigger: "blur" }
+        ],
+        shopEndTime: [
+          { required: true, message: "打烊时间不能为空", trigger: "blur" }
+        ]
       }
-      //sels:[],
     };
   },
   created() {
@@ -229,6 +282,9 @@ export default {
     handleAdd() {
       this.add_FormVisible = true;
       this.add_Form = {
+        account: "",
+        password: "",
+        password2: "",
         shopName: "",
         shopPhone: "",
         shopSalesVolume: "",
@@ -243,14 +299,9 @@ export default {
       this.$refs.add_Form.validate(valid => {
         if (valid) {
           this.$confirm("确认提交吗？", "提示", {}).then(() => {
-            //this.addLoading = true;
-            //NProgress.start();
-            //let para = Object.assign({}, this.add_Form);
-
+            this.add_FormVisible = false;
             this.$axios
               .post(this.url_add_Form, {
-                //shopID: sessionStorage.getItem("shopID")
-                //add_Form:para
                 shopName: this.add_Form.shopName,
                 account: this.add_Form.account,
                 shopPhone: this.add_Form.shopPhone,
@@ -258,19 +309,18 @@ export default {
                 posString: this.add_Form.shopAddress,
                 shopStartTime: this.add_Form.shopStartTime,
                 shopEndTime: this.add_Form.shopEndTime,
-                shopPicUrl:
+                picUrl:
                   "https://tse4-mm.cn.bing.net/th?id=OIP.-f_CE3A-13sMV8RI1iU4TAHaFj&pid=Api&dpr=1"
               })
               .then(res => {
-                //this.addLoading = false;
-                //NProgress.done();
-                this.$message({
-                  message: "提交成功",
-                  type: "success"
-                });
-                this.$refs["add_Form"].resetFields();
-                this.add_FormVisible = false;
-                this.getData();
+                let status = res.data.status;
+                if (status == 200) {
+                  this.$message.success("添加成功！");
+                  this.$refs["add_Form"].resetFields();
+                  this.getData();
+                } else {
+                  this.$message.error("添加失败啦");
+                }
               });
           });
         }

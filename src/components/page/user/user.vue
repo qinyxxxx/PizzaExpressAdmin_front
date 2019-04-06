@@ -15,7 +15,7 @@
         <el-button type="plain" @click="clear">清除/刷新</el-button>
         <!-- <el-button type="plain" @click="getData">刷新</el-button> -->
       </div>
-      <el-table :data="userData" ref="filterTable" border class="table" fit>
+      <el-table :data="userData.slice((cur_page-1)*10,cur_page*10)" ref="filterTable" border class="table" fit>
         <el-table-column prop="userID" label="ID" width="100"></el-table-column>
         <el-table-column prop="userName" label="昵称" width="150"></el-table-column>
         <el-table-column prop="userPhone" label="电话" width="200"></el-table-column>
@@ -57,6 +57,7 @@
           @current-change="handleCurrentChange"
           layout="prev, pager, next"
           :total="total"
+          :current-page="cur_page"
         ></el-pagination>
       </div>
     </div>
@@ -72,7 +73,7 @@ export default {
       urlInit: "/pizzaexpress/user/getuserinfo",
       userData: [],
       cur_page: 1,
-      total: 20,
+      total: 0,
       selectWord: "",
       userID: "",
       orderObj: "",
@@ -97,12 +98,7 @@ export default {
         .then(res => {
           let userData = res.data.userData.data;
           this.userData = userData;
-          // let status = res.data.status; //状态码
-          // if (status == 200) {
-          //   console.log(this.userData);
-          // } else {
-          //   console.log(status);
-          // }
+          this.total = userData.length;
         });
       // this.userData = [
       //   {
@@ -143,12 +139,7 @@ export default {
         .then(res => {
           let userData = res.data.userData.data;
           this.userData = userData;
-          // let status = res.data.status; //状态码
-          // if (status == 200) {
-          //   console.log(this.userData);
-          // } else {
-          //   console.log(status);
-          // }
+          this.total = userData.length;
         });
     },
     clear(){

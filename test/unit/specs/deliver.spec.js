@@ -18,7 +18,7 @@ describe('deliver.vue', () => {
     expect(defaultData.urlInit).toBe('/pizzaexpress/deliver/getalldeliver')
   })
   it('初始化一页的数量应该是20', () => {
-    expect(vm.total).toBe(20)
+    expect(vm.total).toBe(10)
   })
   it('应该有控制翻页的函数',() => {
     expect(typeof Deliver.methods.handleCurrentChange).toBe('function')
