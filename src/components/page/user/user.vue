@@ -36,20 +36,6 @@
           </template>
         </el-table-column>
         <el-table-column prop="userAddress" label="常用收货地址" :formatter="formatter"></el-table-column>
-        <!-- <el-table-column prop="lastOrderID" label="最近一次订单编号" width="250">
-          <template slot-scope="scope">
-            <el-button
-              type="text"
-              size="small"
-              @click="handleOrder(scope.row)"
-            >{{scope.row.lastOrderID}}</el-button>
-            <el-dialog title="订单详情" :visible.sync="orderFormVisible">
-
-            </el-dialog>
-          </template>
-        </el-table-column>
-        <el-table-column prop="commonCity" label="常驻城市" width="250"></el-table-column>
-        <el-table-column prop="totalCost" label="历史总消费金额" width="250"></el-table-column>-->
       </el-table>
       <div class="pagination">
         <el-pagination
