@@ -105,7 +105,7 @@ export default {
             name: "月销售额",
             type: "line",
             stack: "总量",
-            data: [1200, 1320, 1010, 1340, 900, 2300],
+            data: [8200, 6320, 9010, 10340, 9000, 11200],
             itemStyle: {
               normal: {
                 color: "#106EDD"

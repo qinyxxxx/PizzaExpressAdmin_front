@@ -44,7 +44,7 @@
             >{{scope.row.deliverStatus}}</el-tag>
           </template>
         </el-table-column>
-        <el-table-column label="操作" width="250" align="center">
+        <!-- <el-table-column label="操作" width="250" align="center">
           <template slot-scope="scope">
             <el-button
               v-if="scope.row.deliverStatus=='配送中'"
@@ -53,7 +53,7 @@
               @click="openDetails(scope.row)"
             >查看配送信息</el-button>
           </template>
-        </el-table-column>
+        </el-table-column>-->
       </el-table>
       <div class="pagination">
         <el-pagination
@@ -143,24 +143,30 @@ export default {
           this.deliverName = this.select_word;
           break;
       }
-      this.$axios
-        .post(this.urlSelect, {
-          deliverID: this.deliverID,
-          deliverName: this.deliverName,
-          shopID: sessionStorage.getItem("shopID")
-        })
-        .then(res => {
-          let deliverData = res.data.deliverData.data;
-          if (deliverData.length == 0) {
-            this.$message({
-              message: "未找到含有'" + this.select_word + "'的记录",
-              type: "info"
-            });
-          } else {
-            this.deliverData = deliverData;
-            this.total = deliverData.length;
-          }
-        });
+      if (this.select_cate == "") {
+        this.$message.error("抱歉，搜索类别不能为空");
+      } else if (this.select_word == "") {
+        this.$message.error("抱歉，搜索内容不能为空");
+      } else {
+        this.$axios
+          .post(this.urlSelect, {
+            deliverID: this.deliverID,
+            deliverName: this.deliverName,
+            shopID: sessionStorage.getItem("shopID")
+          })
+          .then(res => {
+            let deliverData = res.data.deliverData.data;
+            if (deliverData.length == 0) {
+              this.$message({
+                message: "未找到含有'" + this.select_word + "'的记录",
+                type: "info"
+              });
+            } else {
+              this.deliverData = deliverData;
+              this.total = deliverData.length;
+            }
+          });
+      }
     },
     openDetails(row) {
       this.$router.push({
@@ -180,6 +186,8 @@ export default {
     clear() {
       this.select_cate = "";
       this.select_word = "";
+      this.deliverID = "-1";
+      this.deliverName = "-1";
       this.getData();
     }
   }

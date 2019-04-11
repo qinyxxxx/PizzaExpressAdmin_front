@@ -12,7 +12,7 @@
       <div class="handle-box">
         <el-select v-model="select_cate" filterable placeholder="筛选条件" class="handle-select mr10">
           <el-option key="1" label="订单编号" value="订单编号"></el-option>
-          <el-option key="2" label="配送员" value="配送员"></el-option>
+          <el-option key="2" label="配送员编号" value="配送员编号"></el-option>
         </el-select>
         <el-input v-model="select_word" placeholder="筛选关键词" class="handle-input mr10"></el-input>
         <br>
@@ -89,7 +89,7 @@
             >{{scope.row.orderStatus}}</el-tag>
           </template>
         </el-table-column>
-        <el-table-column label="操作" width="200" align="center">
+        <!-- <el-table-column label="操作" width="200" align="center">
           <template slot-scope="scope">
             <el-button
               v-if="scope.row.orderStatus=='正在配送'"
@@ -98,7 +98,7 @@
               @click="openDetails(scope.row)"
             >查看配送状态</el-button>
           </template>
-        </el-table-column>
+        </el-table-column>-->
       </el-table>
       <div class="pagination">
         <el-pagination
@@ -130,6 +130,9 @@ export default {
       orderID: "-1",
       deliverID: "-1",
       pickerOptions2: {
+        disabledDate(time) {
+          return time.getTime() > Date.now() - 8.64e6;
+        },
         shortcuts: [
           {
             text: "最近一周",
@@ -198,7 +201,7 @@ export default {
     },
     search() {
       switch (this.select_cate) {
-        case "配送员":
+        case "配送员编号":
           this.orderID = "-1";
           this.deliverID = this.select_word;
           break;
@@ -207,49 +210,54 @@ export default {
           this.orderID = this.select_word;
           break;
       }
-
-      if (!this.select_date[0] || !this.select_date[1]) {
-        this.$axios
-          .post(this.urlSelect, {
-            orderID: this.orderID,
-            deliverID: this.deliverID,
-            startTime: "-1",
-            endTime: "-1",
-            shopID: sessionStorage.getItem("shopID")
-          })
-          .then(res => {
-            let orderData = res.data.orderData.data;
-            if (orderData.length == 0) {
-              this.$message({
-                message: "抱歉，未找到记录",
-                type: "info"
-              });
-            } else {
-              this.orderData = orderData;
-              this.total = orderData.length;
-            }
-          });
+      if (this.select_cate == "") {
+        this.$message.error("抱歉，搜索类别不能为空");
+      } else if (this.select_word == "") {
+        this.$message.error("抱歉，搜索内容不能为空");
       } else {
-        this.$axios
-          .post(this.urlSelect, {
-            orderID: this.orderID,
-            deliverID: this.deliverID,
-            startTime: this.select_date[0],
-            endTime: this.select_date[1],
-            shopID: sessionStorage.getItem("shopID")
-          })
-          .then(res => {
-            let orderData = res.data.orderData.data;
-            if (orderData.length == 0) {
-              this.$message({
-                message: "抱歉，未找到记录",
-                type: "info"
-              });
-            } else {
-              this.orderData = orderData;
-              this.total = orderData.length;
-            }
-          });
+        if (!this.select_date[0] || !this.select_date[1]) {
+          this.$axios
+            .post(this.urlSelect, {
+              orderID: this.orderID,
+              deliverID: this.deliverID,
+              startTime: "-1",
+              endTime: "-1",
+              shopID: sessionStorage.getItem("shopID")
+            })
+            .then(res => {
+              let orderData = res.data.orderData.data;
+              if (orderData.length == 0) {
+                this.$message({
+                  message: "抱歉，未找到记录",
+                  type: "info"
+                });
+              } else {
+                this.orderData = orderData;
+                this.total = orderData.length;
+              }
+            });
+        } else {
+          this.$axios
+            .post(this.urlSelect, {
+              orderID: this.orderID,
+              deliverID: this.deliverID,
+              startTime: this.select_date[0],
+              endTime: this.select_date[1],
+              shopID: sessionStorage.getItem("shopID")
+            })
+            .then(res => {
+              let orderData = res.data.orderData.data;
+              if (orderData.length == 0) {
+                this.$message({
+                  message: "抱歉，未找到记录",
+                  type: "info"
+                });
+              } else {
+                this.orderData = orderData;
+                this.total = orderData.length;
+              }
+            });
+        }
       }
     },
     openDetails(row) {
@@ -291,8 +299,9 @@ export default {
     clear() {
       this.select_cate = "";
       this.select_word = "";
-      this.select_date = "";
-      this.getData();
+      this.select_date = [];
+      this.deliverID = "-1";
+      (this.orderID = "-1"), this.getData();
     }
   }
 };

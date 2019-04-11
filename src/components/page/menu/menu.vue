@@ -16,7 +16,7 @@
         </el-select>
         <el-input v-model="select_word" placeholder="筛选关键词" class="handle-input mr10"></el-input>
         <el-button type="primary" @click="search">搜索</el-button>
-        <el-button type="plain" @click="clear">清除</el-button>
+        <el-button type="plain" @click="clear">清除/刷新</el-button>
         <el-button type="success" @click="addPizza">添加新品</el-button>
         <el-dialog title="添加菜品" :visible.sync="addFormVisible" :close-on-click-modal="false">
           <el-form :model="addObj" :rules="rules" ref="addObj">
@@ -356,16 +356,29 @@ export default {
           this.pizzaID = this.select_word;
           break;
       }
-      this.$axios
-        .post(this.urlSelect, {
-          pizzaID: this.pizzaID,
-          pizzaName: this.pizzaName
-        })
-        .then(res => {
-          let pizzaData = res.data.itemData.data;
-          this.pizzaData = pizzaData;
-          this.total = pizzaData.length;
-        });
+      if (this.select_cate == "") {
+        this.$message.error("抱歉，搜索类别不能为空");
+      } else if (this.select_word == "") {
+        this.$message.error("抱歉，搜索内容不能为空");
+      } else {
+        this.$axios
+          .post(this.urlSelect, {
+            pizzaID: this.pizzaID,
+            pizzaName: this.pizzaName
+          })
+          .then(res => {
+            let pizzaData = res.data.itemData.data;
+            if (pizzaData.length == 0) {
+              this.$message({
+                message: "未找到含有'" + this.select_word + "'的记录",
+                type: "info"
+              });
+            } else {
+              this.pizzaData = pizzaData;
+              this.total = pizzaData.length;
+            }
+          });
+      }
     },
     clear() {
       this.select_cate = "";

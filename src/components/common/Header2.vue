@@ -13,15 +13,6 @@
                         <i class="el-icon-rank"></i>
                     </el-tooltip>
                 </div>
-                <!-- 消息中心 -->
-                <div class="btn-bell">
-                    <el-tooltip effect="dark" :content="messageNum?`有${messageNum}条未读消息`:`消息中心`" placement="bottom">
-                        <router-link to="/message">
-                            <i class="el-icon-bell"></i>
-                        </router-link>
-                    </el-tooltip>
-                    <span class="btn-bell-badge" v-if="messageNum"></span>
-                </div>
                 <!-- 用户头像 -->
                 <div class="user-avator"><img src="../../assets/img/smile.png"></div>
                 <!-- 用户名下拉菜单 -->
@@ -47,9 +38,6 @@
                 fullscreen: false,
                 name: '',
                 messageNum: 0,
-                // url:{
-                //     info:"/pizza_express_admin/admin/pwdVerification"
-                // }
             }
         },
         computed:{

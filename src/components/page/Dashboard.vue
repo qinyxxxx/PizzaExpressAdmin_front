@@ -18,13 +18,13 @@
             <span>工厂基本信息</span>
           </div>
           <el-table :data="factory_info" border class="table">
-            <el-table-column prop="factory_name" label="名称" width="120"></el-table-column>
-            <el-table-column prop="factory_id" label="ID编号" width="100"></el-table-column>
-            <el-table-column prop="factory_count" label="上月接单量" width="110"></el-table-column>
-            <el-table-column prop="factory_number" label="电话" width="100"></el-table-column>
-            <el-table-column prop="factory_address" label="地址" :formatter="formatter"></el-table-column>
-            <el-table-column prop="start_time" label="营业时间" width="90"></el-table-column>
-            <el-table-column prop="end_time" label="打烊时间" width="90"></el-table-column>
+            <el-table-column prop="shopName" label="名称" width="120"></el-table-column>
+            <el-table-column prop="shopID" label="ID编号" width="100"></el-table-column>
+            <el-table-column prop="shopSalesVolume" label="上月接单量" width="110"></el-table-column>
+            <el-table-column prop="shopPhone" label="电话" width="100"></el-table-column>
+            <el-table-column prop="shopAddress" label="地址" :formatter="formatter"></el-table-column>
+            <el-table-column prop="shopStartTime" label="营业时间" width="90"></el-table-column>
+            <el-table-column prop="shopEndTime" label="打烊时间" width="90"></el-table-column>
           </el-table>
         </el-card>
       </el-col>
@@ -59,13 +59,13 @@ export default {
       shopID: sessionStorage.getItem("shopID"),
       factory_info: [
         {
-          factory_name: "华东师范大学店",
-          factory_id: 123456,
-          factory_number: 12580,
-          factory_count: 2300,
-          factory_address: "中山北路3663号",
-          start_time: "8:00",
-          end_time: "22:00"
+          shopName: "华东师范大学店",
+          shopID: 123456,
+          shopNumber: 12580,
+          shopSalesVolume: 2300,
+          shopAddress: "中山北路3663号",
+          shopStartTime: "8:00",
+          shopEndTime: "22:00"
         }
       ]
     };
@@ -75,7 +75,7 @@ export default {
   },
   methods: {
     formatter(row, column) {
-      return row.factory_address;
+      return row.shopAddress;
     },
     drawColumnChart() {
       this.chartColumn = echarts.init(document.getElementById("chartColumn"));

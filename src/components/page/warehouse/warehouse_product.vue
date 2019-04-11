@@ -130,23 +130,27 @@ export default {
       this.add_product_form.itemId = row.itemId;
     },
     search() {
-      this.$axios
-        .post(this.url_search_byname, {
-          shopID: sessionStorage.getItem("shopID"),
-          pizzaName: this.select_word
-        })
-        .then(res => {
-          let warehouseData = res.data.itemData.data;
-          if (warehouseData.length == 0) {
-            this.$message({
-              message: "未找到含有'" + this.select_word + "'的记录",
-              type: "info"
-            });
-          } else {
-            this.warehouseData = warehouseData;
-            this.total = warehouseData.length;
-          }
-        });
+      if (this.select_word == "") {
+        this.$message.error("抱歉，搜索内容不能为空");
+      } else {
+        this.$axios
+          .post(this.url_search_byname, {
+            shopID: sessionStorage.getItem("shopID"),
+            pizzaName: this.select_word
+          })
+          .then(res => {
+            let warehouseData = res.data.itemData.data;
+            if (warehouseData.length == 0) {
+              this.$message({
+                message: "未找到含有'" + this.select_word + "'的记录",
+                type: "info"
+              });
+            } else {
+              this.warehouseData = warehouseData;
+              this.total = warehouseData.length;
+            }
+          });
+      }
     },
     clear() {
       this.select_word = "";
@@ -166,7 +170,9 @@ export default {
               .then(res => {
                 let status = res.data.status;
                 if (status == "原料不足") {
-                  this.$message.error("抱歉，超出剩余原料库存，请先对进货原料。");
+                  this.$message.error(
+                    "抱歉，超出剩余原料库存，请先对进货原料。"
+                  );
                 } else if (status == "500") {
                   this.$message.error("新增失败。");
                 } else {

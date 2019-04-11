@@ -15,7 +15,13 @@
         <el-button type="plain" @click="clear">清除/刷新</el-button>
         <!-- <el-button type="plain" @click="getData">刷新</el-button> -->
       </div>
-      <el-table :data="userData.slice((cur_page-1)*10,cur_page*10)" ref="filterTable" border class="table" fit>
+      <el-table
+        :data="userData.slice((cur_page-1)*10,cur_page*10)"
+        ref="filterTable"
+        border
+        class="table"
+        fit
+      >
         <el-table-column prop="userID" label="ID" width="100"></el-table-column>
         <el-table-column prop="userName" label="昵称" width="150"></el-table-column>
         <el-table-column prop="userPhone" label="电话" width="200"></el-table-column>
@@ -79,13 +85,11 @@ export default {
       return row.userAddress;
     },
     getData() {
-      this.$axios
-        .post(this.urlInit)
-        .then(res => {
-          let userData = res.data.userData.data;
-          this.userData = userData;
-          this.total = userData.length;
-        });
+      this.$axios.post(this.urlInit).then(res => {
+        let userData = res.data.userData.data;
+        this.userData = userData;
+        this.total = userData.length;
+      });
       // this.userData = [
       //   {
       //     userID: "1",
@@ -117,21 +121,32 @@ export default {
       return row.userStatus === value;
     },
     search() {
-      this.userID = this.selectWord;
-      this.$axios
-        .post(this.urlSelectUser, {
-          userID: this.userID
-        })
-        .then(res => {
-          let userData = res.data.userData.data;
-          this.userData = userData;
-          this.total = userData.length;
-        });
+      if (this.selectWord == "") {
+        this.$message.error("抱歉，搜索内容不能为空");
+      } else {
+        this.userID = this.selectWord;
+        this.$axios
+          .post(this.urlSelectUser, {
+            userID: this.userID
+          })
+          .then(res => {
+            let userData = res.data.userData.data;
+            if (userData.length == 0) {
+              this.$message({
+                message: "未找到含有'" + this.selectWord + "'的记录",
+                type: "info"
+              });
+            } else {
+              this.userData = userData;
+              this.total = userData.length;
+            }
+          });
+      }
     },
-    clear(){
+    clear() {
       this.selectWord = "";
-      this.getData()
-    },
+      this.getData();
+    }
   }
 };
 </script>

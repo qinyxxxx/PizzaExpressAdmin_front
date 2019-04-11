@@ -19,8 +19,8 @@
               <div class="grid-content grid-con-1">
                 <i class="el-icon-pizza-yonghu1 grid-con-icon"></i>
                 <div class="grid-cont-right">
-                  <div class="grid-num">34</div>
-                  <div>用户访问量</div>
+                  <div class="grid-num">{{sumShops}}</div>
+                  <div>工厂总数</div>
                 </div>
               </div>
             </el-card>
@@ -30,8 +30,8 @@
               <div class="grid-content grid-con-2">
                 <i class="el-icon-pizza-tongzhi1 grid-con-icon"></i>
                 <div class="grid-cont-right">
-                  <div class="grid-num">0</div>
-                  <div>系统消息</div>
+                  <div class="grid-num">{{sumUsers}}</div>
+                  <div>用户总数</div>
                 </div>
               </div>
             </el-card>
@@ -41,8 +41,8 @@
               <div class="grid-content grid-con-3">
                 <i class="el-icon-pizza-caiwubaobiao grid-con-icon"></i>
                 <div class="grid-cont-right">
-                  <div class="grid-num">657</div>
-                  <div>今日销售披萨数量</div>
+                  <div class="grid-num">{{sumOrders}}</div>
+                  <div>今日披萨总销量</div>
                 </div>
               </div>
             </el-card>
@@ -74,14 +74,28 @@ export default {
   data() {
     return {
       urlSeletTop: "/pizzaexpress/shop/getTop5shops",
+      urlGetSum: "/pizzaexpress/shop/getallsalesvolume",
       chartColumn: null,
       chartBar: null,
       name: sessionStorage.getItem("account"),
       role: "系统管理员",
-      topShopData: []
+      topShopData: [],
+      sumOrders: 0,
+      sumUsers: 0,
+      sumShops: 0,
     };
   },
+  created() {
+    this.getData();
+  },
   methods: {
+    getData() {
+      this.$axios.post(this.urlGetSum).then(res => {
+        this.sumOrders = res.data.salesVolume;
+        this.sumUsers = res.data.userCount;
+        this.sumShops = res.data.shopCount;
+      });
+    },
     drawColumnChart() {
       this.chartColumn = echarts.init(document.getElementById("chartColumn"));
       this.chartColumn.setOption({
@@ -151,7 +165,7 @@ export default {
             name: "月收益额",
             type: "line",
             stack: "总量",
-            data: [1200, 1320, 1010, 1340, 900, 2300],
+            data: [8200, 6320, 9010, 10340, 9000, 11200],
             itemStyle: {
               normal: {
                 color: "#106EDD"
@@ -202,10 +216,6 @@ export default {
   font-size: 20px;
   color: #000;
 }
-/*.factory-info{*/
-/*font-size: 18px;*/
-/*color: #000;*/
-/*}*/
 
 .grid-content {
   display: flex;

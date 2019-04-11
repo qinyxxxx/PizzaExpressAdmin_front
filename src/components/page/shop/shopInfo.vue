@@ -117,7 +117,7 @@
     </el-dialog>
 
     <el-dialog title="修改" :visible.sync="edit_FormVisible" :close-on-click-modal="false">
-      <el-form :model="edit_Form" label-width="80px" ref="edit_Form">
+      <el-form :model="edit_Form" label-width="80px" ref="edit_Form" :rules="rules">
         <el-row>
           <el-col :span="12">
             <el-form-item label="工厂名称" prop="shopName">
@@ -237,7 +237,7 @@ export default {
         ],
         shopName: [
           { required: true, message: "名称不能为空", trigger: "blur" },
-          { min: 5, max: 10, message: "长度在 5 到 10 个字符", trigger: "blur" }
+          { min: 3, max: 10, message: "长度在 3 到 10 个字符", trigger: "blur" }
         ],
         shopPhone: [
           { type: "number", message: "电话只能包含数字", trigger: "blur" }
@@ -330,29 +330,36 @@ export default {
       switch (this.select_cate) {
         case "工厂名称":
           this.shopName = this.select_word;
+          this.shopID = "-1";
           break;
         case "工厂ID":
           this.shopID = this.select_word;
+          this.shopName = "-1";
           break;
       }
-
-      this.$axios
-        .post(this.url_select_factory, {
-          shopID: this.shopID,
-          shopName: this.shopName
-        })
-        .then(res => {
-          let shopData = res.data.shopData.data;
-          if (shopData.length == 0) {
-            this.$message({
-              message: "抱歉，未找到记录",
-              type: "info"
-            });
-          } else {
-            this.factory_info = shopData;
-            this.total = shopData.length;
-          }
-        });
+      if (this.select_cate == "") {
+        this.$message.error("抱歉，搜索类别不能为空");
+      } else if (this.select_word == "") {
+        this.$message.error("抱歉，搜索内容不能为空");
+      } else {
+        this.$axios
+          .post(this.url_select_factory, {
+            shopID: this.shopID,
+            shopName: this.shopName
+          })
+          .then(res => {
+            let shopData = res.data.shopData.data;
+            if (shopData.length == 0) {
+              this.$message({
+                message: "抱歉，未找到记录",
+                type: "info"
+              });
+            } else {
+              this.factory_info = shopData;
+              this.total = shopData.length;
+            }
+          });
+      }
     },
     factory_edit(index, row) {
       this.edit_FormVisible = true;

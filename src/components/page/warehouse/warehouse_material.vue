@@ -212,23 +212,27 @@ export default {
     },
 
     search() {
-      this.$axios
-        .post(this.url_search_byname, {
-          shopID: sessionStorage.getItem("shopID"),
-          formulaName: this.select_word
-        })
-        .then(res => {
-          let warehouseData = res.data.purchaseData.data;
-          if (warehouseData.length == 0) {
-            this.$message({
-              message: "未找到含有'" + this.select_word + "'的记录",
-              type: "info"
-            });
-          } else {
-            this.warehouseData = warehouseData;
-            this.total = warehouseData.length;
-          }
-        });
+      if (this.select_word == "") {
+        this.$message.error("抱歉，搜索内容不能为空");
+      } else {
+        this.$axios
+          .post(this.url_search_byname, {
+            shopID: sessionStorage.getItem("shopID"),
+            formulaName: this.select_word
+          })
+          .then(res => {
+            let warehouseData = res.data.purchaseData.data;
+            if (warehouseData.length == 0) {
+              this.$message({
+                message: "未找到含有'" + this.select_word + "'的记录",
+                type: "info"
+              });
+            } else {
+              this.warehouseData = warehouseData;
+              this.total = warehouseData.length;
+            }
+          });
+      }
     },
     clear() {
       this.select_word = "";
